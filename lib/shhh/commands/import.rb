@@ -12,7 +12,7 @@ module Shhh
 
         if !collision || overwrite_file?
           mkdir_p(dotfiles_path)
-          destination = dotfile_path(@path)
+          destination = generate_dotfile_path(@path)
           
           if collision
             sideline = "#{destination}.old.#{Time.new.to_i}"

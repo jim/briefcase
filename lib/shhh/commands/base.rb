@@ -6,18 +6,20 @@ module Shhh
       
       include FileUtils
       
-      DOTFILES_DIR = '.testfiles'
+      DOTFILES_DIR = '.testfiles' || ENV['DOTFILES_DIR']
       
       def initialize(args, options)
         @args = args
         @options = options
         execute
+        
+        puts
+        success "Done."
       end
       
       def execute
       end
     
-      
       def symlink(path, destination)        
         ln_s(path, destination)
         info "Symlinking %s -> %s", destination, path
@@ -28,7 +30,6 @@ module Shhh
         info "Moving %s to %s", path, destination  
       end
       
-      
       def home_path
         @home_path ||= `echo ~`.strip!
       end
@@ -37,7 +38,7 @@ module Shhh
         File.join(home_path, DOTFILES_DIR)
       end
       
-      def dotfile_path(file_path)
+      def generate_dotfile_path(file_path)
         File.join(dotfiles_path, visible_name(file_path))
       end
       
@@ -49,12 +50,13 @@ module Shhh
         File.basename(file_path).gsub(/^\./, '')
       end
     
-      def success(*args); say $terminal.color(format(*args), :green); end
+      def success(*args); say $terminal.color(format(*args), :green, :bold); end
       def info(*args); say $terminal.color(format(*args), :yellow); end
       def error(*args); say $terminal.color(format(*args), :red); end
-      def warn(*args); say $terminal.color(format(*args), :yellow); end
+      def warn(*args); say $terminal.color(format(*args), :magenta); end
       
       def fail(*args); say $terminal.color(format(*args), :red); exit; end
+      def intro(*args); say $terminal.color(format(*args), :bold); puts; end
       
     end
   end

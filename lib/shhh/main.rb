@@ -10,10 +10,10 @@ command :import do |c|
   c.when_called Shhh::Commands::Import
 end
 
-command :link do |c|
-  c.syntax = 'shhh link'
+command :sync do |c|
+  c.syntax = 'shhh sync'
   c.description = 'Updates all symlinks for files included in ~/.dotfiles'
-  c.when_called Shhh::Commands::Link
+  c.when_called Shhh::Commands::Sync
 end
 
 command :generate do |c|
