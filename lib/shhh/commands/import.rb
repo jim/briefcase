@@ -23,7 +23,6 @@ module Shhh
           move(@path, destination)
           symlink(destination, @path)
           
-          success 'Done'
         else
           info "Cancelled"
         end
