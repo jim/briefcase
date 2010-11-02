@@ -4,7 +4,7 @@ module Shhh
       
       def execute
         @path = File.expand_path(@args.first)
-        info("Importing %s to %s", @path, dotfiles_path)
+        intro("Importing %s into %s", @path, dotfiles_path)
 
         fail("%s does not exist", @path) unless File.exist?(@path)
 
