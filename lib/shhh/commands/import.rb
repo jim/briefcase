@@ -3,7 +3,7 @@ module Shhh
     class Import < Base
       
       def execute
-        say @args.first
+        success("Importing %s", @args.first)
       end
       
     end

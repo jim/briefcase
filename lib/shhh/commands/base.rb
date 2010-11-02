@@ -10,6 +10,11 @@ module Shhh
       
       def execute
       end
+    
+      def success(*args); say $terminal.color(format(*args), :green); end
+      def info(*args); say $terminal.color(format(*args), :yellow); end
+      def error(*args); say $terminal.color(format(*args), :red); end
+      def warn(*args); say $terminal.color(format(*args), :yellow); end
       
     end
   end
