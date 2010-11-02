@@ -6,7 +6,7 @@ module Shhh
       
       include FileUtils
       
-      DOTFILES_DIR = '.testfiles' || ENV['DOTFILES_DIR']
+      DOTFILES_DIR = '.dotfiles' || ENV['DOTFILES_DIR']
       
       def initialize(args, options)
         @args = args
