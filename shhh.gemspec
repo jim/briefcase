@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
      "lib/shhh/commands/import.rb",
      "lib/shhh/commands/sync.rb",
      "lib/shhh/main.rb",
+     "shhh.gemspec",
      "test/helper.rb",
      "test/test_shhh.rb"
   ]
