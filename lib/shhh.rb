@@ -1,9 +1,6 @@
-require 'commander'
-
 require File.expand_path('shhh/commands/base', File.dirname(__FILE__))
 require File.expand_path('shhh/commands/import', File.dirname(__FILE__))
 require File.expand_path('shhh/commands/sync', File.dirname(__FILE__))
-require File.expand_path('shhh/main', File.dirname(__FILE__))
 
 module Shhh
   
@@ -11,8 +8,8 @@ module Shhh
   DEFAULT_HOME_DIR = '~' || ENV['SHHH_HOME_DIR']
   
   class << self
-    attr_reader :dotfiles_path
-    attr_reader :home_path
+    attr_accessor :dotfiles_path
+    attr_accessor :home_path
     
     def dotfiles_path
       @dotfiles_path ||= File.join(home_path, DEFAULT_DOTFILES_DIR)
@@ -22,5 +19,7 @@ module Shhh
       @home_path ||= `echo #{DEFAULT_HOME_DIR}`.strip!
     end
   end
+  
+  class UnrecoverableError < StandardError; end
   
 end

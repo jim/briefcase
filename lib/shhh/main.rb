@@ -1,4 +1,5 @@
 require 'commander/import'
+require File.expand_path('../shhh', File.dirname(__FILE__))
 
 program :name, 'Shhh'
 program :version, File.read(File.expand_path('../../VERSION', File.dirname(__FILE__)))
