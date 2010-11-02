@@ -43,7 +43,7 @@ module Shhh
       end
       
       def dotfile_exists?(file_path)
-        File.exist?(dotfile_path(file_path))
+        File.exist?(generate_dotfile_path(file_path))
       end
     
       def visible_name(file_path)
