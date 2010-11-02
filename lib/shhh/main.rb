@@ -1,7 +1,7 @@
 require 'commander/import'
 
 program :name, 'Shhh'
-program :version, '0.0.1'
+program :version, File.read(File.expand_path('../../VERSION', File.dirname(__FILE__)))
 program :description, 'Makes it easier to keep dotfiles in git'
 
 command :import do |c|
