@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "shhh"
     gem.summary = %Q{Shhh manages dotfiles and handles keeping their secrets safe}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{Command line program to migrate dotfiles to a git repo at ~/.dotfiles and generate static dotfiles with secret values.}
     gem.email = "jim@autonomousmachine.com"
     gem.homepage = "http://github.com/jim/shhh"
     gem.authors = ["Jim Benton"]
