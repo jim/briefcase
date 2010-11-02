@@ -17,6 +17,18 @@ module Shhh
       def execute
       end
     
+      
+      def symlink(path, destination)        
+        ln_s(path, destination)
+        info "Symlinking %s -> %s", destination, path
+      end
+    
+      def move(path, destination) 
+        mv(path, destination)
+        info "Moving %s to %s", path, destination  
+      end
+      
+      
       def home_path
         @home_path ||= `echo ~`.strip!
       end

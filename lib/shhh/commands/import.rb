@@ -19,12 +19,9 @@ module Shhh
             info "Renaming %s to %s", destination, sideline
             mv(destination, sideline)
           end
-          
-          mv(@path, destination)
-          info "Moving %s to %s", @path, destination
-
-          ln_s(destination, @path)
-          info "Symlinking %s to %s", @path, destination
+                    
+          move(@path, destination)
+          symlink(destination, @path)
           
           success 'Done'
         else
