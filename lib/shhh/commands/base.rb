@@ -1,9 +1,16 @@
 module Shhh
   module Commands
     class Base
+      
       def initialize(args, options)
-        say "#{args.join(' ').to_s}"
+        @args = args
+        @options = options
+        execute
       end
+      
+      def execute
+      end
+      
     end
   end
 end
