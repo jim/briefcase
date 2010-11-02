@@ -6,8 +6,6 @@ module Shhh
       
       include FileUtils
       
-      DOTFILES_DIR = '.dotfiles' || ENV['DOTFILES_DIR']
-      
       def initialize(args, options)
         @args = args
         @options = options
@@ -31,11 +29,11 @@ module Shhh
       end
       
       def home_path
-        @home_path ||= `echo ~`.strip!
+        Shhh.home_path
       end
       
       def dotfiles_path
-        File.join(home_path, DOTFILES_DIR)
+        Shhh.dotfiles_path
       end
       
       def generate_dotfile_path(file_path)
