@@ -46,7 +46,7 @@ class Shhh::Commands::Base
   attr_accessor :say_buffer
   def say(message)
     @say_buffer ||= []
-    @say_buffer << message.gsub(/\e\[\d+m/, '')
+    @say_buffer << message
   end
 end
 
@@ -54,16 +54,20 @@ def output_must_contain(*regexes)
   regexes.all? do |regex|
     buffer = @command.say_buffer
     buffer.any? do |line|
-      line =~ regex
+      line.gsub(/\e\[\d+m/, '') =~ regex
     end.must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
   end
 end
 
 class Object
-  def stub(method_name, return_value=nil)
+  def stub(method_name, return_value=nil, &block)
     (class << self; self; end).class_eval do
-      define_method method_name do
-        return_value
+      define_method method_name do |*args|
+        if block_given?
+          block.call(*args)
+        else
+          return_value          
+        end
       end
     end
   end
