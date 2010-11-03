@@ -3,6 +3,7 @@ module Shhh
     class Import < Base
       
       def execute
+        
         @path = File.expand_path(@args.first)
         intro("Importing %s into %s", @path, dotfiles_path)
 
@@ -22,6 +23,12 @@ module Shhh
                     
           move(@path, destination)
           symlink(destination, @path)
+          
+          if @options.erb
+            erb_path = generate_dotfile_path(@path + '.erb')
+            info "Creating ERB version at #{erb_path}"
+            cp(destination, erb_path)
+          end
           
         else
           info "Cancelled"

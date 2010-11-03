@@ -13,8 +13,7 @@ describe Shhh do
   describe Shhh::Commands::Import do
   
     it "does not import a nonexistent dotfile" do
-      setup_command :import, '.test'
-      run_command
+      run_command("import .test")
       output_must_contain(/does not exist/)
     end
     
@@ -22,13 +21,27 @@ describe Shhh do
       original = File.join(home_path, '.test')
       moved = File.join(dotfiles_path, 'test')
       
-      setup_command :import, original
       create_empty_file(original)
 
-      run_command
+      run_command("import #{original}")
 
       output_must_contain(/Importing/, /Moving/)
       file_must_exist(moved)
+      symlink_must_exist(original, moved)
+    end
+    
+    it "imports a dynamic dotfile" do
+      original = File.join(home_path, '.test')
+      moved = File.join(dotfiles_path, 'test')
+      erb = File.join(dotfiles_path, 'test.erb')
+      
+      create_empty_file(original)
+
+      run_command("import #{original} --erb")
+
+      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
+      file_must_exist(moved)
+      file_must_exist(erb)
       symlink_must_exist(original, moved)
     end
     
@@ -41,14 +54,14 @@ describe Shhh do
       
         create_empty_file(@original)
         create_empty_file(@moved)
-        setup_command :import, @original
+
       end
       
       it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
-        stub_choose_and_return('replace')
-        @command.stub(:generate_timestamp, '1234')
       
-        run_command
+        run_command("import #{@original} --erb") do |c|
+          c.response(/Do you want to replace it\?/, 'replace')
+        end
 
         output_must_contain(/Moving/, /Symlinking/, /already exists as a dotfile/)
         file_must_exist(@moved)
@@ -57,9 +70,10 @@ describe Shhh do
       end
     
       it "does not modify an existing dotfile when instructed not to" do
-        stub_choose_and_return('skip')
-      
-        run_command
+
+        run_command("import #{@original} --erb") do |c|
+          c.response(/Do you want to replace it\?/, 'skip')
+        end
 
         output_must_contain(/already exists as a dotfile/)
         output_must_not_contain(/Moving/, /Symlinking/)

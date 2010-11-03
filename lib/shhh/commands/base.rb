@@ -9,6 +9,7 @@ module Shhh
       def initialize(args, options)
         @args = args
         @options = options
+        run
       end
       
       def run
@@ -18,10 +19,8 @@ module Shhh
           success "Done."
         rescue UnrecoverableError
           say('Failed!')
+          exit(-1)
         end
-      end
-      
-      def execute
       end
     
       def symlink(path, destination)        
