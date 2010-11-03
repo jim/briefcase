@@ -15,13 +15,17 @@ def dotfiles_path
   File.expand_path('spec_work/shhh_dotfiles', File.dirname(__FILE__))
 end
 
-def execute(command, *args)
+def setup_command(command, *args)
   options = args.last.is_a?(Hash) ? args.pop : {}
   command_klass = "#{command.to_s.capitalize}"
   terminal_out = nil
   std_out, std_err = capture_io do
-    @output = Shhh::Commands.const_get(command_klass).new(args, options).say_buffer
+    @command = Shhh::Commands.const_get(command_klass).new(args, options)
   end
+end
+
+def run_command
+  @command.run
 end
 
 def setup_work_directories
@@ -45,8 +49,11 @@ class Shhh::Commands::Base
   end
 end
 
-def output_must_contain(regex_or_string)
-  @output.any? do |line|
-    line =~ regex_or_string
-  end.must_equal(true, "Could not find #{regex_or_string} in: \n#{@output.join("\n")}")
+def output_must_contain(*regexes)
+  regexes.all? do |regex|
+    buffer = @command.say_buffer
+    buffer.any? do |line|
+      line =~ regex
+    end.must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
+  end
 end

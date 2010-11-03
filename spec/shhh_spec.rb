@@ -2,6 +2,21 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 require 'fileutils'
 include FileUtils
 
+def create_empty_file(path)
+  File.open(path, "w") do |file|
+    file.write('test')
+  end
+end
+
+def file_must_exist(path)
+  File.file?(path).must_equal true
+end
+
+def symlink_must_exist(path, target)
+  File.exist?(path).must_equal(true)
+  File.readlink(path).must_equal(target)
+end
+
 describe Shhh do
   
   before do
@@ -14,9 +29,36 @@ describe Shhh do
   
   describe Shhh::Commands::Import do
   
-    it "should not import a nonexistent dotfile" do
-      execute :import, 'one'
-      output_must_contain /does not exist/
+    it "does not import a nonexistent dotfile" do
+      setup_command :import, '.test'
+      run_command
+      output_must_contain(/does not exist/)
+    end
+    
+    it "imports a dotfile" do
+      original = File.join(home_path, '.test')
+      moved = File.join(dotfiles_path, 'test')
+      
+      setup_command :import, original
+      create_empty_file(original)
+
+      run_command
+
+      output_must_contain(/Importing/, /Moving/)
+      file_must_exist(moved)
+      symlink_must_exist(original, moved)
+    end
+    
+    it "renames an existing dotfile when importing a duplicate" do
+      original = File.join(home_path, '.test')
+      moved = File.join(dotfiles_path, 'test')
+      create_empty_file(original)
+      create_empty_file(moved)
+      # execute :import, original
+      # output_must_contain(/Importing/, /Moving/)
+      # file_must_exist(moved)
+      # file_must_exist(moved)      
+      # symlink_must_exist(original, moved)
     end
   
   end

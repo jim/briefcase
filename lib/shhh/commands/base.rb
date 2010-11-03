@@ -9,12 +9,15 @@ module Shhh
       def initialize(args, options)
         @args = args
         @options = options
+      end
+      
+      def run
         begin
           execute
-          puts
+          say('')
           success "Done."
         rescue UnrecoverableError
-          puts 'failed'
+          say('Failed!')
         end
       end
       
@@ -57,7 +60,7 @@ module Shhh
       def warn(*args); say $terminal.color(format(*args), :magenta); end
       
       def fail(*args); say $terminal.color(format(*args), :red); raise UnrecoverableError; end
-      def intro(*args); say $terminal.color(format(*args), :bold); puts; end
+      def intro(*args); say $terminal.color(format(*args), :bold); say(''); end
       
     end
   end
