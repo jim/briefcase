@@ -21,5 +21,6 @@ module Shhh
   end
   
   class UnrecoverableError < StandardError; end
-  
+  class CommandAborted < StandardError; end
+
 end

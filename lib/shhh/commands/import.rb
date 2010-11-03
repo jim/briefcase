@@ -4,6 +4,8 @@ module Shhh
       
       def execute
         
+        verify_dotfiles_directory_exists
+        
         @path = File.expand_path(@args.first)
         intro("Importing %s into %s", @path, dotfiles_path)
 
@@ -33,7 +35,7 @@ module Shhh
           end
           
         else
-          info "Cancelled"
+          raise CommandAborted.new('Cancelled.')
         end
         
       end

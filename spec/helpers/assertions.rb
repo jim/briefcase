@@ -1,3 +1,11 @@
+def directory_must_exist(path)
+  File.directory?(path).must_equal(true, "Expected directory to exist at #{path}")
+end
+
+def directory_must_not_exist(path)
+  File.directory?(path).must_equal(false, "Did not expect directory to exist at #{path}")
+end
+
 def file_must_exist(path)
   File.file?(path).must_equal(true, "Expected file to exist at #{path}")
 end
