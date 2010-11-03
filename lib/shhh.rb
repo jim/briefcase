@@ -4,8 +4,8 @@ require File.expand_path('shhh/commands/sync', File.dirname(__FILE__))
 
 module Shhh
   
-  DEFAULT_DOTFILES_DIR = '~/.dotfiles' || ENV['SHHH_DOTFILES_DIR']
-  DEFAULT_HOME_DIR = '~' || ENV['SHHH_HOME_DIR']
+  DEFAULT_DOTFILES_DIR = ENV['SHHH_DOTFILES_DIR'] || '~/.dotfiles'
+  DEFAULT_HOME_DIR = ENV['SHHH_HOME_DIR'] || '~'
   
   class << self
     attr_accessor :dotfiles_path
