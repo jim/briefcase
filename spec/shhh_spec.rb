@@ -4,17 +4,43 @@ include FileUtils
 
 def create_empty_file(path)
   File.open(path, "w") do |file|
-    file.write('test')
+    file.write(path)
   end
 end
 
 def file_must_exist(path)
-  File.file?(path).must_equal true
+  File.file?(path).must_equal(true, "Expected file to exist at #{path}")
+end
+
+def file_must_not_exist(path)
+  File.file?(path).must_equal(false, "Expected file to not exist at #{path}")
 end
 
 def symlink_must_exist(path, target)
-  File.exist?(path).must_equal(true)
-  File.readlink(path).must_equal(target)
+  File.exist?(path).must_equal(true, "Expected symlink to exist at #{path}")
+  actual = File.readlink(path)
+  actual.must_equal(target, "Expected symlink to #{target}, was #{actual}")
+end
+
+def file_must_not_have_moved(path)
+  file_must_exist(path)
+  birthplace = File.open(path) do |file|
+    file.read
+  end
+  birthplace.must_equal(path, "Did not expect file at #{path} to have been moved from #{birthplace}")
+end
+
+def symlink_must_not_exist(path)
+  if File.exist?(path)
+    File.file?(path).must_equal true
+  end
+end
+
+def stub_choose_and_return(return_value)
+  @command.stub :choose do |message, *choices|
+    @command.say(message)
+    return_value
+  end
 end
 
 describe Shhh do
@@ -49,28 +75,42 @@ describe Shhh do
       symlink_must_exist(original, moved)
     end
     
-    it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
-      original = File.join(home_path, '.test')
-      moved = File.join(dotfiles_path, 'test')
-      relocated = File.join(dotfiles_path, 'test.old.1234')
+    describe "collision handling" do
       
-      create_empty_file(original)
-      create_empty_file(moved)
-      setup_command :import, original
+      before do
+        @original = File.join(home_path, '.test')
+        @moved = File.join(dotfiles_path, 'test')
+        @relocated = File.join(dotfiles_path, 'test.old.1234')
       
-      @command.stub :choose do |message, *choices|
-        @command.say(message)
-        'replace'
+        create_empty_file(@original)
+        create_empty_file(@moved)
+        setup_command :import, @original
       end
       
-      @command.stub(:generate_timestamp, '1234')
+      it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
+        stub_choose_and_return('replace')
+        @command.stub(:generate_timestamp, '1234')
       
-      run_command
+        run_command
 
-      output_must_contain(/Importing/, /Moving/, /already exists as a dotfile/)
-      file_must_exist(moved)
-      file_must_exist(relocated)
-      symlink_must_exist(original, moved)
+        output_must_contain(/Moving/, /Symlinking/, /already exists as a dotfile/)
+        file_must_exist(@moved)
+        file_must_exist(@relocated)
+        symlink_must_exist(@original, @moved)
+      end
+    
+      it "does not modify an existing dotfile when instructed not to" do
+        stub_choose_and_return('skip')
+      
+        run_command
+
+        output_must_contain(/already exists as a dotfile/)
+        output_must_not_contain(/Moving/, /Symlinking/)
+        file_must_not_have_moved(@moved)
+        file_must_not_exist(@relocated)
+        symlink_must_not_exist(@original)
+      end
+      
     end
   
   end

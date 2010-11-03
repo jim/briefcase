@@ -50,12 +50,23 @@ class Shhh::Commands::Base
   end
 end
 
+def array_matches_regex(array, regex)
+  array.any? do |element|
+    element.gsub(/\e\[\d+m/, '') =~ regex
+  end
+end
+
 def output_must_contain(*regexes)
+  buffer = @command.say_buffer
   regexes.all? do |regex|
-    buffer = @command.say_buffer
-    buffer.any? do |line|
-      line.gsub(/\e\[\d+m/, '') =~ regex
-    end.must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
+    array_matches_regex(buffer, regex).must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
+  end
+end
+
+def output_must_not_contain(*regexes)
+  buffer = @command.say_buffer
+  regexes.any? do |regex|
+    array_matches_regex(buffer, regex).must_equal(false, "Found #{regex} in: \n#{buffer.join("\n")}")
   end
 end
 
