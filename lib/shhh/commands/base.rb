@@ -53,6 +53,10 @@ module Shhh
       def visible_name(file_path)
         File.basename(file_path).gsub(/^\./, '')
       end
+      
+      def generate_timestamp
+        Time.new.to_i
+      end
     
       def success(*args); say $terminal.color(format(*args), :green, :bold); end
       def info(*args); say $terminal.color(format(*args), :yellow); end

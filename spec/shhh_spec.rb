@@ -49,17 +49,27 @@ describe Shhh do
       symlink_must_exist(original, moved)
     end
     
-    it "renames an existing dotfile when importing a duplicate" do
+    it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
       original = File.join(home_path, '.test')
       moved = File.join(dotfiles_path, 'test')
+      relocated = File.join(dotfiles_path, 'test.old.1234')
+      
       create_empty_file(original)
       create_empty_file(moved)
       setup_command :import, original
-      @command.stub :choose, 'replace'
+      
+      @command.stub :choose do |message, *choices|
+        @command.say(message)
+        'replace'
+      end
+      
+      @command.stub(:generate_timestamp, '1234')
+      
       run_command
-      output_must_contain(/already exists as a dotfile/)
+
+      output_must_contain(/Importing/, /Moving/, /already exists as a dotfile/)
       file_must_exist(moved)
-      file_must_exist(moved)      
+      file_must_exist(relocated)
       symlink_must_exist(original, moved)
     end
   

@@ -15,7 +15,7 @@ module Shhh
           destination = generate_dotfile_path(@path)
           
           if collision
-            sideline = "#{destination}.old.#{Time.new.to_i}"
+            sideline = "#{destination}.old.#{generate_timestamp}"
             info "Renaming %s to %s", destination, sideline
             mv(destination, sideline)
           end
