@@ -8,13 +8,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'shhh'
 
-def home_path
-  File.expand_path('spec_work/shhh_home', File.dirname(__FILE__))
-end
-
-def dotfiles_path
-  File.expand_path('spec_work/shhh_dotfiles', File.dirname(__FILE__))
-end
+require 'helpers/assertions'
+require 'helpers/files'
+require 'helpers/stubbing'
 
 def setup_command(command, *args)
   options = args.last.is_a?(Hash) ? args.pop : {}
@@ -29,16 +25,11 @@ def run_command
   @command.run
 end
 
-def setup_work_directories
-  mkdir_p(home_path)
-  mkdir_p(dotfiles_path)
-  Shhh.home_path = home_path
-  Shhh.dotfiles_path = dotfiles_path
-end
-
-def cleanup_work_directories
-  rm_rf(home_path)
-  rm_rf(dotfiles_path)
+def stub_choose_and_return(return_value)
+  @command.stub :choose do |message, *choices|
+    @command.say(message)
+    return_value
+  end
 end
 
 $terminal = HighLine.new
@@ -47,39 +38,5 @@ class Shhh::Commands::Base
   def say(message)
     @say_buffer ||= []
     @say_buffer << message
-  end
-end
-
-def array_matches_regex(array, regex)
-  array.any? do |element|
-    element.gsub(/\e\[\d+m/, '') =~ regex
-  end
-end
-
-def output_must_contain(*regexes)
-  buffer = @command.say_buffer
-  regexes.all? do |regex|
-    array_matches_regex(buffer, regex).must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
-  end
-end
-
-def output_must_not_contain(*regexes)
-  buffer = @command.say_buffer
-  regexes.any? do |regex|
-    array_matches_regex(buffer, regex).must_equal(false, "Found #{regex} in: \n#{buffer.join("\n")}")
-  end
-end
-
-class Object
-  def stub(method_name, return_value=nil, &block)
-    (class << self; self; end).class_eval do
-      define_method method_name do |*args|
-        if block_given?
-          block.call(*args)
-        else
-          return_value          
-        end
-      end
-    end
   end
 end

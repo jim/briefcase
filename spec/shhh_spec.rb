@@ -1,47 +1,4 @@
 require File.expand_path('spec_helper', File.dirname(__FILE__))
-require 'fileutils'
-include FileUtils
-
-def create_empty_file(path)
-  File.open(path, "w") do |file|
-    file.write(path)
-  end
-end
-
-def file_must_exist(path)
-  File.file?(path).must_equal(true, "Expected file to exist at #{path}")
-end
-
-def file_must_not_exist(path)
-  File.file?(path).must_equal(false, "Expected file to not exist at #{path}")
-end
-
-def symlink_must_exist(path, target)
-  File.exist?(path).must_equal(true, "Expected symlink to exist at #{path}")
-  actual = File.readlink(path)
-  actual.must_equal(target, "Expected symlink to #{target}, was #{actual}")
-end
-
-def file_must_not_have_moved(path)
-  file_must_exist(path)
-  birthplace = File.open(path) do |file|
-    file.read
-  end
-  birthplace.must_equal(path, "Did not expect file at #{path} to have been moved from #{birthplace}")
-end
-
-def symlink_must_not_exist(path)
-  if File.exist?(path)
-    File.file?(path).must_equal true
-  end
-end
-
-def stub_choose_and_return(return_value)
-  @command.stub :choose do |message, *choices|
-    @command.say(message)
-    return_value
-  end
-end
 
 describe Shhh do
   
