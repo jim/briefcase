@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'minitest/spec'
 require 'minitest/mock'
 require 'highline'
