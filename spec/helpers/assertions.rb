@@ -33,15 +33,13 @@ def array_matches_regex(array, regex)
 end
 
 def output_must_contain(*regexes)
-  buffer = @command.say_buffer
   regexes.all? do |regex|
-    array_matches_regex(buffer, regex).must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
+    array_matches_regex(@output, regex).must_equal(true, "Could not find #{regex} in: \n#{@output}")
   end
 end
 
 def output_must_not_contain(*regexes)
-  buffer = @command.say_buffer
   regexes.any? do |regex|
-    array_matches_regex(buffer, regex).must_equal(false, "Found #{regex} in: \n#{buffer.join("\n")}")
+    array_matches_regex(@output, regex).must_equal(false, "Found #{regex} in: \n#{@output}")
   end
 end
