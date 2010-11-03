@@ -12,12 +12,14 @@ module Shhh
         collision = dotfile_exists?(@path)
 
         if !collision || overwrite_file?
+                  
           mkdir_p(dotfiles_path)
           destination = generate_dotfile_path(@path)
           
           if collision
-            sideline = "#{destination}.old.#{generate_timestamp}"
-            info "Renaming %s to %s", destination, sideline
+            existing = Dir.glob("#{destination}.old.*").size
+            sideline = "#{destination}.old.#{existing+1}"
+            info "Moving %s to %s", destination, sideline
             mv(destination, sideline)
           end
                     

@@ -18,6 +18,14 @@ def symlink_must_not_exist(path)
   end
 end
 
+def file_must_have_moved(original_path, new_path)
+  file_must_exist(new_path)
+  birthplace = File.open(new_path) do |file|
+    file.read
+  end
+  birthplace.must_equal(original_path, "Expected file at #{new_path} to have been moved from #{original_path}")
+end
+
 def file_must_not_have_moved(path)
   file_must_exist(path)
   birthplace = File.open(path) do |file|
