@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'minitest/spec'
+require 'minitest/mock'
 require 'highline'
 MiniTest::Unit.autorun
 
@@ -55,5 +56,15 @@ def output_must_contain(*regexes)
     buffer.any? do |line|
       line =~ regex
     end.must_equal(true, "Could not find #{regex} in: \n#{buffer.join("\n")}")
+  end
+end
+
+class Object
+  def stub(method_name, return_value=nil)
+    (class << self; self; end).class_eval do
+      define_method method_name do
+        return_value
+      end
+    end
   end
 end

@@ -54,11 +54,13 @@ describe Shhh do
       moved = File.join(dotfiles_path, 'test')
       create_empty_file(original)
       create_empty_file(moved)
-      # execute :import, original
-      # output_must_contain(/Importing/, /Moving/)
-      # file_must_exist(moved)
-      # file_must_exist(moved)      
-      # symlink_must_exist(original, moved)
+      setup_command :import, original
+      @command.stub :choose, 'replace'
+      run_command
+      output_must_contain(/already exists as a dotfile/)
+      file_must_exist(moved)
+      file_must_exist(moved)      
+      symlink_must_exist(original, moved)
     end
   
   end
