@@ -32,6 +32,7 @@ module Shhh
             erb_path = generate_dotfile_path(@path + '.erb')
             info "Creating ERB version at #{erb_path}"
             cp(destination, erb_path)
+            add_to_git_ignore(visible_name(@path))
           end
           
         else

@@ -33,6 +33,12 @@ module Shhh
         info "Moving %s to %s", path, destination  
       end
       
+      def add_to_git_ignore(filename)
+        File.open(File.join(dotfiles_path, '.gitignore'), "a") do |file|
+          file.write(filename + "\n")
+        end
+      end
+      
       def verify_dotfiles_directory_exists
         if !File.directory?(dotfiles_path)
           choice = choose("You don't appear to have a git repository at #{dotfiles_path}. Do you want to create one now?", 'create', 'cancel') do |menu|

@@ -70,6 +70,7 @@ describe Shhh::Commands::Import do
       file_must_have_moved(@original_path, @destination_path)
       symlink_must_exist(@original_path, @destination_path)
       file_must_have_moved(@original_path, dynamic_path)
+      git_ignore_must_include(@destination_path)
     end
   
     describe "collision handling" do

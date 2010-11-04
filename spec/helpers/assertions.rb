@@ -36,10 +36,15 @@ end
 
 def file_must_not_have_moved(path)
   file_must_exist(path)
-  birthplace = File.open(path) do |file|
-    file.read
-  end
+  birthplace = File.open(path) { |file| file.read }
   birthplace.must_equal(path, "Did not expect file at #{path} to have been moved from #{birthplace}")
+end
+
+def git_ignore_must_include(path)
+  git_ignore_path = File.join(dotfiles_path, '.gitignore')
+  file_must_exist(git_ignore_path)
+  ignore_contents = File.open(git_ignore_path) { |file| file.read }
+  ignore_contents.must_match %r{^#{File.basename(path)}$}
 end
 
 def array_matches_regex(array, regex)
