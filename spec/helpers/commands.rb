@@ -14,12 +14,14 @@ def run_command(command, &block)
   
   ENV['SHHH_DOTFILES_DIR'] = dotfiles_path
   ENV['SHHH_HOME_DIR'] = home_path
+  ENV['SHHH_SECRETS_PATH'] = secrets_path  
   ENV['RUBYOPT'] = 'rubygems'
   
   full_command = "./bin/shhh #{command}"
 
   Open3.popen3(full_command) do |stdin, stdout, stderr|
     while output = stdout.gets()
+      # puts output
       @output << output
       responses.each do |response|
         regex, text = response

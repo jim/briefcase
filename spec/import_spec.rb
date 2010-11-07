@@ -3,7 +3,6 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 describe Shhh::Commands::Import do
 
   before do
-    setup_directory_variables
     create_home_directory
     
     @original_path = File.join(home_path, '.test')
@@ -11,12 +10,13 @@ describe Shhh::Commands::Import do
   end
 
   after do
-    cleanup_work_directories
+    cleanup_home_directory
+    cleanup_dotfiles_directory
   end
 
   it "creates a .dotfiles directory if it doesn't exist" do
     create_empty_file(@original_path)
-
+    
     run_command("import #{@original_path}") do |c|
       c.response(/create one now?/, 'create')
     end
@@ -31,7 +31,7 @@ describe Shhh::Commands::Import do
     create_empty_file(@original_path)
 
     run_command("import #{@original_path}") do |c|
-      c.response(/create one now?/, 'cancel')
+      c.response(/create one now?/, 'abort')
     end
 
     output_must_not_contain(/Creating/)
@@ -43,6 +43,11 @@ describe Shhh::Commands::Import do
 
     before do
       create_dotfiles_directory
+      create_git_repo
+    end
+  
+    after do
+      cleanup_dotfiles_directory
     end
   
     it "does not import a nonexistent dotfile" do
@@ -60,18 +65,18 @@ describe Shhh::Commands::Import do
       symlink_must_exist(@original_path, @destination_path)
     end
   
-    it "imports a dynamic dotfile" do
-      dynamic_path = File.join(dotfiles_path, 'test.erb')
-      create_empty_file(@original_path)
-
-      run_command("import #{@original_path} --erb")
-
-      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
-      file_must_have_moved(@original_path, @destination_path)
-      symlink_must_exist(@original_path, @destination_path)
-      file_must_have_moved(@original_path, dynamic_path)
-      git_ignore_must_include(@destination_path)
-    end
+    # it "imports a dynamic dotfile" do
+    #   dynamic_path = File.join(dotfiles_path, 'test.erb')
+    #   create_empty_file(@original_path)
+    # 
+    #   run_command("import #{@original_path} --erb")
+    # 
+    #   output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
+    #   file_must_have_moved(@original_path, @destination_path)
+    #   symlink_must_exist(@original_path, @destination_path)
+    #   file_must_have_moved(@original_path, dynamic_path)
+    #   git_ignore_must_include(@destination_path)
+    # end
   
     describe "collision handling" do
     
@@ -106,7 +111,7 @@ describe Shhh::Commands::Import do
   
       it "does not modify an existing dotfile when instructed not to" do
         run_command("import #{@original_path}") do |c|
-          c.response(/Do you want to replace it\?/, 'skip')
+          c.response(/Do you want to replace it\?/, 'abort')
         end
 
         output_must_contain(/already exists as a dotfile/)
