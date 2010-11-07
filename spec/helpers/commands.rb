@@ -16,6 +16,7 @@ def run_command(command, &block)
   ENV['SHHH_HOME_DIR'] = home_path
   ENV['SHHH_SECRETS_PATH'] = secrets_path  
   ENV['RUBYOPT'] = 'rubygems'
+  ENV['EDITOR'] = 'cat'
   
   full_command = "./bin/shhh #{command}"
 

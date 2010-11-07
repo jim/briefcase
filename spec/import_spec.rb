@@ -65,18 +65,22 @@ describe Shhh::Commands::Import do
       symlink_must_exist(@original_path, @destination_path)
     end
   
-    # it "imports a dynamic dotfile" do
-    #   dynamic_path = File.join(dotfiles_path, 'test.erb')
-    #   create_empty_file(@original_path)
-    # 
-    #   run_command("import #{@original_path} --erb")
-    # 
-    #   output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
-    #   file_must_have_moved(@original_path, @destination_path)
-    #   symlink_must_exist(@original_path, @destination_path)
-    #   file_must_have_moved(@original_path, dynamic_path)
-    #   git_ignore_must_include(@destination_path)
-    # end
+    it "imports a dynamic dotfile" do
+      dynamic_path = File.join(dotfiles_path, 'test.erb')
+      create_empty_file(@original_path)
+    
+    
+#       stub_editor_response <<-TEXT
+# TEXT
+    
+      run_command("import #{@original_path} --erb")
+    
+      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
+      file_must_have_moved(@original_path, @destination_path)
+      symlink_must_exist(@original_path, @destination_path)
+      file_must_have_moved(@original_path, dynamic_path)
+      git_ignore_must_include(@destination_path)
+    end
   
     describe "collision handling" do
     
