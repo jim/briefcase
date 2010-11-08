@@ -60,9 +60,6 @@ TEXT
             system(editor_command, erb_path)
             edited_content = File.read(erb_path)
 
-            puts original_content
-            puts edited_content
-
             replacement_regex = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
             edited_content.lines.each_with_index do |line, line_index|
               if line =~ replacement_regex
