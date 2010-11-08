@@ -13,6 +13,10 @@ def secrets_path
   File.expand_path('../spec_work/shhh_home/.shhh_secrets', File.dirname(__FILE__))
 end
 
+def editor_responses_path
+  File.expand_path('../spec_work/shhh_editor_responses', File.dirname(__FILE__))
+end
+
 def create_home_directory
   mkdir_p(home_path)
 end
@@ -33,8 +37,12 @@ def cleanup_dotfiles_directory
   rm_rf(dotfiles_path)
 end
 
-def create_empty_file(path)
+def create_file(path, text)
   File.open(path, "w") do |file|
-    file.write(path)
+    file.write(text)
   end
+end
+
+def create_trackable_file(path)
+  create_file(path, path)
 end

@@ -14,9 +14,10 @@ def run_command(command, &block)
   
   ENV['SHHH_DOTFILES_DIR'] = dotfiles_path
   ENV['SHHH_HOME_DIR'] = home_path
-  ENV['SHHH_SECRETS_PATH'] = secrets_path  
+  ENV['SHHH_SECRETS_PATH'] = secrets_path
+  ENV['SHHH_TESTING'] = 'true'
   ENV['RUBYOPT'] = 'rubygems'
-  ENV['EDITOR'] = 'cat'
+  ENV['EDITOR'] = File.expand_path('../bin/editor', File.dirname(__FILE__))
   
   full_command = "./bin/shhh #{command}"
 

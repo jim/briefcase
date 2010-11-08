@@ -12,10 +12,11 @@ describe Shhh::Commands::Import do
   after do
     cleanup_home_directory
     cleanup_dotfiles_directory
+    cleanup_editor_responses
   end
 
   it "creates a .dotfiles directory if it doesn't exist" do
-    create_empty_file(@original_path)
+    create_trackable_file(@original_path)
     
     run_command("import #{@original_path}") do |c|
       c.response(/create one now?/, 'create')
@@ -28,7 +29,7 @@ describe Shhh::Commands::Import do
   end
   
   it "does not create a .dotfiles directory when a users cancels" do
-    create_empty_file(@original_path)
+    create_trackable_file(@original_path)
 
     run_command("import #{@original_path}") do |c|
       c.response(/create one now?/, 'abort')
@@ -56,7 +57,7 @@ describe Shhh::Commands::Import do
     end
   
     it "imports a dotfile" do
-      create_empty_file(@original_path)
+      create_trackable_file(@original_path)
 
       run_command("import #{@original_path}")
 
@@ -67,18 +68,21 @@ describe Shhh::Commands::Import do
   
     it "imports a dynamic dotfile" do
       dynamic_path = File.join(dotfiles_path, 'test.erb')
-      create_empty_file(@original_path)
+      create_file @original_path, <<-TEXT
+setting: ABCDEFG
+TEXT
     
-    
-#       stub_editor_response <<-TEXT
-# TEXT
-    
+      stub_editor_response dynamic_path, <<-TEXT
+setting: # shhh(:token)
+TEXT
+
       run_command("import #{@original_path} --erb")
     
-      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/)
-      file_must_have_moved(@original_path, @destination_path)
+      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/, /Storing secret value for key: token/)
+      secret_must_be_stored(@destination_path, :token, 'ABCDEFG')
+      # file_must_have_moved(@original_path, @destination_path)
       symlink_must_exist(@original_path, @destination_path)
-      file_must_have_moved(@original_path, dynamic_path)
+      # file_must_have_moved(@original_path, dynamic_path)
       git_ignore_must_include(@destination_path)
     end
   
@@ -86,8 +90,8 @@ describe Shhh::Commands::Import do
     
       before do
         @relocated_path = File.join(dotfiles_path, 'test.old.1')
-        create_empty_file(@original_path)
-        create_empty_file(@destination_path)
+        create_trackable_file(@original_path)
+        create_trackable_file(@destination_path)
       end
     
       it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
@@ -103,7 +107,7 @@ describe Shhh::Commands::Import do
     
       it "renames an existing duplicate dotfile when importing a duplicate and instructed to replace it" do
         duplicate_path = File.join(dotfiles_path, 'test.old.2')
-        create_empty_file(@relocated_path)
+        create_trackable_file(@relocated_path)
 
         run_command("import #{@original_path}") do |c|
           c.response(/Do you want to replace it\?/, 'replace')

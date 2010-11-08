@@ -13,7 +13,7 @@ module Shhh
   DEFAULT_SECRETS_PATH = '~/.shhh_secrets'
   
   class << self
-    attr_accessor :dotfiles_path, :home_path, :secrets_path
+    attr_accessor :dotfiles_path, :home_path, :secrets_path, :testing
     
     def dotfiles_path
       @dotfiles_path ||= File.expand_path(ENV['SHHH_DOTFILES_DIR'] || DEFAULT_DOTFILES_DIR)
@@ -25,6 +25,10 @@ module Shhh
     
     def secrets_path
       @secrets_path ||= File.expand_path(ENV['SHHH_SECRETS_PATH'] || DEFAULT_SECRETS_PATH)
+    end
+    
+    def testing?
+      @testing ||= ENV['SHHH_TESTING'] == 'true'
     end
   end
   

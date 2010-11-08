@@ -33,33 +33,50 @@ module Shhh
           if @options.erb
             erb_path = generate_dotfile_path(@path + '.erb')
             
+            info "Creating ERB version at #{erb_path}"
+            
             original_content = File.read(destination)
-            original_content.insert(0, "# Edit the file below, replacing and sensitive information with shhh(:token).\n# For example:\n#\n# password: shhh(:password)")
+            unless Shhh.testing?
+              original_content.insert 0, <<-TEXT
+# Edit the file below, replacing and sensitive information to turn this:
+#
+#   password: superSecretPassword
+#
+# Into:
+#
+#   password: # shhh(:password)
+#
+
+TEXT
+            end
+          
+            File.open(erb_path, 'w') do |file|
+              file.write(original_content)
+            end
             
             edited_content = ''
-            
-            Tempfile.open(Time.new.to_i.to_s + '.tmp') do |tempfile|
-              File.open(tempfile.path, 'r+') { |f| f.write(original_content) }
-              editor_command = ENV['EDITOR'] || 'vim'
-              system(editor_command, tempfile.path)
-              edited_content = File.open(tempfile.path, 'r') { |f| f.read }
-            end
 
-            replacement_regex = /^(.*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
+            editor_command = ENV['EDITOR'] || 'vim'
+            system(editor_command, erb_path)
+            edited_content = File.read(erb_path)
+
+            puts original_content
+            puts edited_content
+
+            replacement_regex = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
             edited_content.lines.each_with_index do |line, line_index|
               if line =~ replacement_regex
-                key = $2
+                key = $2.to_sym
                 mask = %r{^#{$1}(.*)$}
                 value = original_content.lines.to_a[line_index].match(mask)[1]
+                info "Storing secret value for key: #{key}"
                 add_secret(destination, key, value)
               end
             end
             
             write_secrets
-            
-            info "Creating ERB version at #{erb_path}"
-            # cp(destination, erb_path)
-            # add_to_git_ignore(visible_name(@path))
+
+            add_to_git_ignore(visible_name(@path))
           end
           
         else

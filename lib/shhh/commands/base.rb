@@ -34,7 +34,7 @@ module Shhh
       end
 
       def add_to_git_ignore(filename)
-        File.open(File.join(dotfiles_path, '.gitignore'), "r+") do |file|
+        File.open(File.join(dotfiles_path, '.gitignore'), "a+") do |file|
           contents = file.read
           unless contents =~ %r{^#{filename}$}
             info("Adding #{filename} to #{File.join(dotfiles_path, '.gitignore')}")
