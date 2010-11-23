@@ -1,6 +1,8 @@
 = shhh
 
-Description goes here.
+This will be a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
+
+It is NOT yet ready for actual use.
 
 == Note on Patches/Pull Requests
  
