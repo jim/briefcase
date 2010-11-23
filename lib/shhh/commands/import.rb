@@ -17,16 +17,14 @@ module Shhh
 TEXT
       
       def execute
-        
         verify_dotfiles_directory_exists
         
         @path = File.expand_path(@args.first)
-
         raise UnrecoverableError.new("#{@path} does not exist") unless File.exist?(@path)
+
         intro("Importing %s into %s", @path, dotfiles_path)
 
         collision = dotfile_exists?(@path)
-
         if !collision || overwrite_file?
                   
           mkdir_p(dotfiles_path)
@@ -45,11 +43,9 @@ TEXT
           if @options.erb
             create_erb_version
           end
-          
         else
           raise CommandAborted.new('Cancelled.')
         end
-        
       end
       
       def add_secret(path, key, value)
