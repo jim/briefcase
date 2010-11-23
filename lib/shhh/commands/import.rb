@@ -48,25 +48,6 @@ TEXT
         end
       end
       
-      def add_secret(path, key, value)
-        path_key = File.basename(path)
-        @new_secrets ||= {}
-        @new_secrets[path_key] ||= {}
-        @new_secrets[path_key][key] = value;
-      end
-      
-      def write_secrets  
-        current_secrets = if File.exist?(secrets_path)
-          info "Loading existing secrets from #{secrets_path}"
-          YAML.load_file(secrets_path)
-        else
-          {}
-        end
-        
-        current_secrets.deep_merge!(@new_secrets || {})
-        write_file(secrets_path, current_secrets.to_yaml)
-      end
-      
       def overwrite_file?
         decision = choose("#{@path} already exists as a dotfile. Do you want to replace it? Your original file will be renamed.", 'replace', 'abort') do |menu|
           menu.index = :letter
