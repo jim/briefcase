@@ -4,14 +4,26 @@ module Shhh
   module Commands
     class Import < Base
       
+      EDITING_HELP_TEXT = <<-TEXT
+# Edit the file below, replacing and sensitive information to turn this:
+#
+#   password: superSecretPassword
+#
+# Into:
+#
+#   password: # shhh(:password)
+#
+
+TEXT
+      
       def execute
         
         verify_dotfiles_directory_exists
         
         @path = File.expand_path(@args.first)
-        intro("Importing %s into %s", @path, dotfiles_path)
 
-        fail("%s does not exist", @path) unless File.exist?(@path)
+        raise UnrecoverableError.new("#{@path} does not exist") unless File.exist?(@path)
+        intro("Importing %s into %s", @path, dotfiles_path)
 
         collision = dotfile_exists?(@path)
 
@@ -31,49 +43,7 @@ module Shhh
           symlink(destination, @path)
           
           if @options.erb
-            erb_path = generate_dotfile_path(@path + '.erb')
-            
-            info "Creating ERB version at #{erb_path}"
-            
-            original_content = File.read(destination)
-            unless Shhh.testing?
-              original_content.insert 0, <<-TEXT
-# Edit the file below, replacing and sensitive information to turn this:
-#
-#   password: superSecretPassword
-#
-# Into:
-#
-#   password: # shhh(:password)
-#
-
-TEXT
-            end
-          
-            File.open(erb_path, 'w') do |file|
-              file.write(original_content)
-            end
-            
-            edited_content = ''
-
-            editor_command = ENV['EDITOR'] || 'vim'
-            system(editor_command, erb_path)
-            edited_content = File.read(erb_path)
-
-            replacement_regex = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
-            edited_content.lines.each_with_index do |line, line_index|
-              if line =~ replacement_regex
-                key = $2.to_sym
-                mask = %r{^#{$1}(.*)$}
-                value = original_content.lines.to_a[line_index].match(mask)[1]
-                info "Storing secret value for key: #{key}"
-                add_secret(destination, key, value)
-              end
-            end
-            
-            write_secrets
-
-            add_to_git_ignore(visible_name(@path))
+            create_erb_version
           end
           
         else
@@ -83,9 +53,10 @@ TEXT
       end
       
       def add_secret(path, key, value)
+        path_key = File.basename(path)
         @new_secrets ||= {}
-        @new_secrets[path] ||= {}
-        @new_secrets[path][key] = value;
+        @new_secrets[path_key] ||= {}
+        @new_secrets[path_key][key] = value;
       end
       
       def write_secrets  
@@ -97,10 +68,7 @@ TEXT
         end
         
         current_secrets.deep_merge!(@new_secrets || {})
-        
-        File.open(secrets_path, 'w') do |file|
-          file.write(current_secrets.to_yaml)
-        end
+        write_file(secrets_path, current_secrets.to_yaml)
       end
       
       def overwrite_file?
@@ -110,6 +78,40 @@ TEXT
         end
         
         decision == 'replace'
+      end
+      
+      def create_erb_version
+        destination = generate_dotfile_path(@path)
+        erb_path = destination + '.erb'
+        info "Creating ERB version at #{erb_path}"
+        
+        original_content = File.read(destination)
+        unless Shhh.testing?
+          original_content.insert 0, EDITING_HELP_TEXT
+        end
+        
+        write_file(erb_path, original_content)
+        edited_content = edit_file_with_editor(erb_path)
+
+        replacement_regex = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
+        edited_content.lines.each_with_index do |line, line_index|
+          if line =~ replacement_regex
+            key = $2.to_sym
+            mask = %r{^#{$1}(.*)$}
+            value = original_content.lines.to_a[line_index].match(mask)[1]
+            info "Storing secret value for key: #{key}"
+            add_secret(destination, key, value)
+          end
+        end
+        
+        write_secrets
+        add_to_git_ignore(visible_name(destination))
+      end
+      
+      def edit_file_with_editor(path)
+        editor_command = ENV['EDITOR'] || 'vim'
+        system(editor_command, path)
+        File.read(path)
       end
       
     end

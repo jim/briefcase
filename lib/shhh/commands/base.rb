@@ -18,7 +18,7 @@ module Shhh
           say('')
           success "Done."
         rescue CommandAborted => e
-          fail(e.message)
+          error(e.message)
           exit(-1)
         end
       end
@@ -31,6 +31,12 @@ module Shhh
       def move(path, destination)
         mv(path, destination)
         info "Moving %s to %s", path, destination
+      end
+
+      def write_file(path, content, io_mode='w')
+        File.open(path, io_mode) do |file|
+          file.write(content)
+        end
       end
 
       def add_to_git_ignore(filename)
@@ -88,8 +94,6 @@ module Shhh
       def info(*args); say $terminal.color(format(*args), :yellow); end
       def error(*args); say $terminal.color(format(*args), :red); end
       def warn(*args); say $terminal.color(format(*args), :magenta); end
-
-      def fail(*args); say $terminal.color(format(*args), :red); end
       def intro(*args); say $terminal.color(format(*args), :bold); say(''); end
 
     end

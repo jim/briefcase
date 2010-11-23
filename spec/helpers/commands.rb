@@ -22,7 +22,7 @@ def run_command(command, &block)
   full_command = "./bin/shhh #{command}"
 
   Open3.popen3(full_command) do |stdin, stdout, stderr|
-    while output = stdout.gets()
+    while output = stdout.gets() || stderr.gets()
       # puts output
       @output << output
       responses.each do |response|

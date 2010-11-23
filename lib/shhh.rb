@@ -2,9 +2,7 @@ require 'yaml'
 
 require 'active_support/core_ext/hash/deep_merge'
 
-require File.expand_path('shhh/commands/base', File.dirname(__FILE__))
-require File.expand_path('shhh/commands/import', File.dirname(__FILE__))
-require File.expand_path('shhh/commands/sync', File.dirname(__FILE__))
+require File.expand_path('shhh/commands', File.dirname(__FILE__))
 
 module Shhh
   
