@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/jim/shhh"
     gem.authors = ["Jim Benton"]
     gem.add_dependency "commander"
-    gem.add_dependency "active_support"    
+    gem.add_dependency "activesupport"    
     gem.add_development_dependency 'minitest'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
