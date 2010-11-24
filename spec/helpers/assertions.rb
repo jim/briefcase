@@ -10,6 +10,11 @@ def file_must_exist(path)
   File.file?(path).must_equal(true, "Expected file to exist at #{path}")
 end
 
+def file_must_contain(path, text)
+  file_must_exist(path)
+  File.read(path).must_equal(text)
+end
+
 def file_must_not_exist(path)
   File.file?(path).must_equal(false, "Expected file to not exist at #{path}")
 end

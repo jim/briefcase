@@ -33,6 +33,12 @@ def create_dotfiles_directory
   mkdir_p(dotfiles_path)
 end
 
+def create_secrets(hash)
+  File.open(secrets_path, "w") do |file|
+    file.write(hash.to_yaml)
+  end  
+end
+
 def cleanup_dotfiles_directory
   rm_rf(dotfiles_path)
 end

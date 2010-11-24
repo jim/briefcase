@@ -14,7 +14,7 @@ module Shhh
           
           if !File.exist?(dotfile_path) || overwrite_file?(dotfile_path)
             
-            # generate statis file from erb
+            # generate static file from erb
             
           else
             
