@@ -18,11 +18,11 @@ command :sync do |c|
   c.when_called Shhh::Commands::Sync
 end
 
-# command :generate do |c|
-#   c.syntax = 'shhh generate'
-#   c.description = 'Generates static versions of all erb dotfiles in ~/.dotfiles'
-#   c.when_called Shhh::Commands::Generate
-# end
+command :generate do |c|
+  c.syntax = 'shhh generate'
+  c.description = 'Generates static versions of all erb dotfiles in ~/.dotfiles'
+  c.when_called Shhh::Commands::Generate
+end
 
 # command :suggest do |c|
 #   c.syntax = 'shhh suggest'

@@ -23,7 +23,7 @@ def run_command(command, &block)
 
   Open3.popen3(full_command) do |stdin, stdout, stderr|
     while output = stdout.gets() || stderr.gets()
-      # puts output
+      puts output if ENV['SHHH_VERBOSE_TEST'] == 'true'
       @output << output
       responses.each do |response|
         regex, text = response

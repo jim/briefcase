@@ -2,21 +2,26 @@ module Shhh
   module Commands
     module Core
       module Secrets
+        
+        COMMENT_REPLACEMENT_REGEX = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
+        
         def add_secret(path, key, value)
           path_key = File.basename(path)
-          @new_secrets ||= {}
-          @new_secrets[path_key] ||= {}
-          @new_secrets[path_key][key] = value;
+          secrets[path_key] ||= {}
+          secrets[path_key][key] = value;
+        end
+      
+        def get_secret(path, key)
+          path_key = File.basename(path)
+          secrets[path_key][key] if secrets[path_key] && secrets[path_key][key]
         end
       
         def write_secrets  
-          current_secrets = read_secrets
-          current_secrets.deep_merge!(@new_secrets || {})
-          write_file(secrets_path, current_secrets.to_yaml)
+          write_file(secrets_path, secrets.to_yaml)
         end
         
-        def read_secrets
-          if File.exist?(secrets_path)
+        def secrets
+          @secrets ||= if File.exist?(secrets_path)
             info "Loading existing secrets from #{secrets_path}"
             YAML.load_file(secrets_path)
           else

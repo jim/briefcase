@@ -23,7 +23,12 @@ TEXT
         raise UnrecoverableError.new("#{@path} does not exist") unless File.exist?(@path)
 
         intro("Importing %s into %s", @path, dotfiles_path)
-
+        import_file
+      end
+      
+      private
+      
+      def import_file
         collision = dotfile_exists?(@path)
         if !collision || overwrite_file?
                   
@@ -48,6 +53,7 @@ TEXT
         end
       end
       
+      
       def overwrite_file?
         decision = choose("#{@path} already exists as a dotfile. Do you want to replace it? Your original file will be renamed.", 'replace', 'abort') do |menu|
           menu.index = :letter
@@ -70,9 +76,8 @@ TEXT
         write_file(erb_path, original_content)
         edited_content = edit_file_with_editor(erb_path)
 
-        replacement_regex = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
         edited_content.lines.each_with_index do |line, line_index|
-          if line =~ replacement_regex
+          if line =~ COMMENT_REPLACEMENT_REGEX
             key = $2.to_sym
             mask = %r{^#{$1}(.*)$}
             value = original_content.lines.to_a[line_index].match(mask)[1]

@@ -12,7 +12,8 @@ end
 
 def file_must_contain(path, text)
   file_must_exist(path)
-  File.read(path).must_equal(text)
+  # strip trailing whitespace to make it easier to use multiline strings
+  File.read(path).strip.must_equal(text.strip)
 end
 
 def file_must_not_exist(path)
@@ -55,9 +56,9 @@ end
 def secret_must_be_stored(yaml_key, key, value)
   file_must_exist(secrets_path)
   @secrets = YAML.load_file(secrets_path)
+  @secrets[yaml_key].wont_equal(nil, "Expected YAML secrets file to contain value for key '#{yaml_key}'") 
   @secrets[yaml_key][key].must_equal(value)
 end
-
 
 def array_matches_regex(array, regex)
   array.any? do |element|
