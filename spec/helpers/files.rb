@@ -43,7 +43,7 @@ def cleanup_dotfiles_directory
   rm_rf(dotfiles_path)
 end
 
-def create_file(path, text)
+def create_file(path, text='')
   File.open(path, "w") do |file|
     file.write(text)
   end
