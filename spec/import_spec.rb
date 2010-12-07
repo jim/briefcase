@@ -16,8 +16,6 @@ describe Shhh::Commands::Import do
   end
 
   it "creates a .dotfiles directory if it doesn't exist" do
-    puts; puts; puts
-    
     create_trackable_file(@original_path)
     
     run_command("import #{@original_path}") do |c|
@@ -25,15 +23,10 @@ describe Shhh::Commands::Import do
     end
 
     output_must_contain(/Creating/)
-    output_must_contain(/Initializing/)
+    output_must_contain(/Initialized/)
     directory_must_exist(dotfiles_path)
-
-    puts; puts; puts
     
     directory_must_exist(File.join(dotfiles_path, '.git'))
-
-
-
   end
   
   it "does not create a .dotfiles directory when a users cancels" do
