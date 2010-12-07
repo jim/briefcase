@@ -1,6 +1,6 @@
-require "open3"
+require "open4"
 
-def run_command(command, &block)
+def run_command(command, expected_status=0, &block)
   @output = ''
   
   responses = []
@@ -21,7 +21,7 @@ def run_command(command, &block)
   
   full_command = "./bin/shhh #{command}"
 
-  Open3.popen3(full_command) do |stdin, stdout, stderr|
+  status = Open4.popen4(full_command) do |pid, stdin, stdout, stderr|
     while output = stdout.gets() || stderr.gets()
       puts output if ENV['SHHH_VERBOSE_TEST'] == 'true'
       @output << output
@@ -31,5 +31,8 @@ def run_command(command, &block)
       end
     end
   end
+  
+  exit_status = status.exitstatus
+  fail("Expected exist status of #{expected_status}, got #{exit_status}") unless exit_status == expected_status
   
 end

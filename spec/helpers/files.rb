@@ -1,20 +1,22 @@
 require 'fileutils'
 include FileUtils
 
+SPEC_ROOT = "/tmp/shhh_spec_work"
+
 def home_path
-  File.expand_path('../spec_work/shhh_home', File.dirname(__FILE__))
+  File.expand_path('shhh_home', SPEC_ROOT)
 end
 
 def dotfiles_path
-  File.expand_path('../spec_work/shhh_dotfiles', File.dirname(__FILE__))
+  File.expand_path('shhh_dotfiles', SPEC_ROOT)
 end
 
 def secrets_path
-  File.expand_path('../spec_work/shhh_home/.shhh_secrets', File.dirname(__FILE__))
+  File.expand_path('.shhh_secrets', home_path)
 end
 
 def editor_responses_path
-  File.expand_path('../spec_work/shhh_editor_responses', File.dirname(__FILE__))
+  File.expand_path('shhh_editor_responses', SPEC_ROOT)
 end
 
 def create_home_directory

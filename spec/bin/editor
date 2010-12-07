@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-responses_path = File.expand_path('../spec_work/shhh_editor_responses', File.dirname(__FILE__))
+responses_path = File.expand_path('/tmp/shhh_spec_work/shhh_editor_responses', File.dirname(__FILE__))
 response_file = ARGV[0].gsub(/\//, '_')
 File.open(ARGV[0], 'w') do |file|
   file.write(File.read(File.join(responses_path, response_file)))

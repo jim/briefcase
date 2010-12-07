@@ -1,5 +1,6 @@
 require 'minitest/spec'
 require 'minitest/mock'
+
 require 'highline'
 MiniTest::Unit.autorun
 

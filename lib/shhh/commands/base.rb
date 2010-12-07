@@ -23,9 +23,9 @@ module Shhh
           execute
           say('')
           success "Done."
-        rescue CommandAborted => e
+        rescue CommandAborted, UnrecoverableError => e
           error(e.message)
-          exit(-1)
+          exit(255)
         end
       end
 
@@ -48,8 +48,7 @@ module Shhh
           if choice == 'create'
             info "Creating a directory at #{dotfiles_path}"
             mkdir_p(dotfiles_path)
-            info "Initializing git repository at #{dotfiles_path}"
-            `git init #{dotfiles_path}`
+            info `git init #{dotfiles_path}`
           else
             raise CommandAborted.new('Can not continue without a dotfiles repository!')
           end

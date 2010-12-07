@@ -16,6 +16,8 @@ describe Shhh::Commands::Import do
   end
 
   it "creates a .dotfiles directory if it doesn't exist" do
+    puts; puts; puts
+    
     create_trackable_file(@original_path)
     
     run_command("import #{@original_path}") do |c|
@@ -25,13 +27,19 @@ describe Shhh::Commands::Import do
     output_must_contain(/Creating/)
     output_must_contain(/Initializing/)
     directory_must_exist(dotfiles_path)
+
+    puts; puts; puts
+    
     directory_must_exist(File.join(dotfiles_path, '.git'))
+
+
+
   end
   
   it "does not create a .dotfiles directory when a users cancels" do
     create_trackable_file(@original_path)
 
-    run_command("import #{@original_path}") do |c|
+    run_command("import #{@original_path}", 255) do |c|
       c.response(/create one now?/, 'abort')
     end
 
@@ -52,7 +60,7 @@ describe Shhh::Commands::Import do
     end
   
     it "does not import a nonexistent dotfile" do
-      run_command("import .test")
+      run_command("import .test", 255)
       output_must_contain(/does not exist/)
     end
   
@@ -118,7 +126,7 @@ TEXT
       end
   
       it "does not modify an existing dotfile when instructed not to" do
-        run_command("import #{@original_path}") do |c|
+        run_command("import #{@original_path}", 255) do |c|
           c.response(/Do you want to replace it\?/, 'abort')
         end
 
