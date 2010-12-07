@@ -45,8 +45,8 @@ TEXT
           move(@path, destination)
           symlink(destination, @path)
           
-          if @options.erb
-            create_erb_version
+          if @options.dynamic
+            create_dynamic_version
           end
         else
           raise CommandAborted.new('Cancelled.')
@@ -63,18 +63,18 @@ TEXT
         decision == 'replace'
       end
       
-      def create_erb_version
+      def create_dynamic_version
         destination = generate_dotfile_path(@path)
-        erb_path = destination + '.erb'
-        info "Creating ERB version at #{erb_path}"
+        dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
+        info "Creating dynamic version at #{dynamic_path}"
         
         original_content = File.read(destination)
         unless Shhh.testing?
           original_content.insert 0, EDITING_HELP_TEXT
         end
         
-        write_file(erb_path, original_content)
-        edited_content = edit_file_with_editor(erb_path)
+        write_file(dynamic_path, original_content)
+        edited_content = edit_file_with_editor(dynamic_path)
 
         edited_content.lines.each_with_index do |line, line_index|
           if line =~ COMMENT_REPLACEMENT_REGEX

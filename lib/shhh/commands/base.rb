@@ -7,6 +7,8 @@ module Shhh
   module Commands
     class Base
 
+      DYNAMIC_EXTENSION = 'dynamic'
+
       include FileUtils
       include Core::Files
       include Core::Secrets

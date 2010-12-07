@@ -16,7 +16,7 @@ describe Shhh::Commands::Generate do
   
     it "generates a static version of a dynamic dotfile" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.erb')
+      dynamic_path = File.join(dotfiles_path, 'test.dynamic')
 
       create_secrets('test' => {:email => 'google@internet.com'})      
       create_file dynamic_path, <<-TEXT
@@ -36,7 +36,7 @@ TEXT
 
     it "create a secrets file and adds discovered secrets to it" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.erb')
+      dynamic_path = File.join(dotfiles_path, 'test.dynamic')
 
       create_file dynamic_path, <<-TEXT
 username: # shhh(:email)
@@ -55,7 +55,7 @@ TEXT
     
     it "adds discovered secrets to the secrets file without values" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.erb')
+      dynamic_path = File.join(dotfiles_path, 'test.dynamic')
 
       create_file dynamic_path, <<-TEXT
 username: # shhh(:email)

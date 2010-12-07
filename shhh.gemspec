@@ -1,18 +1,20 @@
+require File.expand_path('lib/shhh/version', File.dirname(__FILE__))
+
 Gem::Specification.new do |s|
   s.name = %q{shhh}
-  s.version = "0.1.2"
+  s.version = Shhh::VERSION
   s.authors = ["Jim Benton"]
   s.date = %q{2010-12-6}
   s.default_executable = %q{shhh}
   s.description = %q{Command line program to migrate dotfiles to a git repo at ~/.dotfiles and generate static dotfiles with secret values.}
   s.email = %q{jim@autonomousmachine.com}
   s.executables = ["shhh"]
-  s.extra_rdoc_files = %w{README LICENSE}
+  s.extra_rdoc_files = %w{README.rdoc LICENSE}
   s.files = Dir['lib/**/*.rb'] +                      # library
             Dir['bin/*'] +                            # executable
             Dir['spec/**/*.rb'] +                     # spec files
             Dir['spec/bin/editor'] +                  # spec editor
-            %w{README LICENSE shhh.gemspec Rakefile}  # mice
+            %w{README.rdoc LICENSE shhh.gemspec Rakefile}  # mice
   
   s.homepage = %q{http://github.com/jim/shhh}
   s.rdoc_options = ["--charset=UTF-8"]

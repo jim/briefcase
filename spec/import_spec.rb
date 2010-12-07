@@ -68,7 +68,7 @@ describe Shhh::Commands::Import do
     end
   
     it "imports a dynamic dotfile" do
-      dynamic_path = File.join(dotfiles_path, 'test.erb')
+      dynamic_path = File.join(dotfiles_path, 'test.dynamic')
       create_file @original_path, <<-TEXT
 setting: ABCDEFG
 TEXT
@@ -77,9 +77,9 @@ TEXT
 setting: # shhh(:token)
 TEXT
 
-      run_command("import #{@original_path} --erb")
+      run_command("import #{@original_path} --dynamic")
     
-      output_must_contain(/Importing/, /Moving/, /Creating ERB version at/, /Storing secret value for key: token/)
+      output_must_contain(/Importing/, /Moving/, /Creating dynamic version at/, /Storing secret value for key: token/)
       secret_must_be_stored('test', :token, 'ABCDEFG')
       # file_must_have_moved(@original_path, @destination_path)
       symlink_must_exist(@original_path, @destination_path)

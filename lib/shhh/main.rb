@@ -2,14 +2,14 @@ require 'commander/import'
 require File.expand_path('../shhh', File.dirname(__FILE__))
 
 program :name, 'Shhh'
-program :version, File.read(File.expand_path('../../VERSION', File.dirname(__FILE__)))
+program :version, Shhh::VERSION
 program :description, 'Makes it easier to keep dotfiles in git'
 
 command :import do |c|
   c.syntax = 'shhh import PATH'
   c.description = 'Move PATH to the version controlled directory and symlink from its current location.'
   c.when_called Shhh::Commands::Import
-  c.option '--erb', 'Imports dotfile and creates ERB version. Adds generated version\'s path to ~/.dotfiles/.gitignore.'
+  c.option '--dynamic', 'Imports dotfile and creates dynamic version. Adds generated version\'s path to ~/.dotfiles/.gitignore.'
 end
 
 command :sync do |c|
@@ -20,7 +20,7 @@ end
 
 command :generate do |c|
   c.syntax = 'shhh generate'
-  c.description = 'Generates static versions of all erb dotfiles in ~/.dotfiles'
+  c.description = 'Generates static versions of all dynamic dotfiles in ~/.dotfiles'
   c.when_called Shhh::Commands::Generate
 end
 

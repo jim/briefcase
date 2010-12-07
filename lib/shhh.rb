@@ -3,6 +3,7 @@ require 'yaml'
 require 'active_support/core_ext/hash/deep_merge'
 
 require File.expand_path('shhh/commands', File.dirname(__FILE__))
+require File.expand_path('shhh/version', File.dirname(__FILE__))
 
 module Shhh
   

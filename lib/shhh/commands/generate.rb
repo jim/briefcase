@@ -5,7 +5,7 @@ module Shhh
       def execute
         intro "Generating dynamic dotfiles in #{dotfiles_path}"
         
-        Dir.glob(File.join(dotfiles_path, '*.erb')) do |path|
+        Dir.glob(File.join(dotfiles_path, "*.#{DYNAMIC_EXTENSION}")) do |path|
           generate_file_for_path(path)
         end
         
@@ -15,7 +15,7 @@ module Shhh
       private
       
       def generate_file_for_path(path)
-        static_path = path.gsub(/.erb$/, '')
+        static_path = path.gsub(/.#{DYNAMIC_EXTENSION}$/, '')
         basename = File.basename(static_path)
         dotfile_path = generate_dotfile_path(basename)
         
