@@ -24,6 +24,8 @@ command :generate do |c|
   c.when_called Shhh::Commands::Generate
 end
 
+default_command :help
+
 # command :suggest do |c|
 #   c.syntax = 'shhh suggest'
 #   c.description 'List dotfiles that are in your home directory and not in ~/.dotfiles'
