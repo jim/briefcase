@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
             Dir['bin/*'] +                            # executable
             Dir['spec/**/*.rb'] +                     # spec files
             Dir['spec/bin/editor'] +                  # spec editor
-            %w{README.rdoc LICENSE shhh.gemspec Rakefile}  # mice
+            %w{README.rdoc LICENSE shhh.gemspec Rakefile}  # misc
   
   s.homepage = %q{http://github.com/jim/shhh}
   s.rdoc_options = ["--charset=UTF-8"]
