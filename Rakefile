@@ -1,29 +1,10 @@
-require 'rubygems'
 require 'rake'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "shhh"
-    gem.summary = %Q{Shhh manages dotfiles and handles keeping their secrets safe}
-    gem.description = %Q{Command line program to migrate dotfiles to a git repo at ~/.dotfiles and generate static dotfiles with secret values.}
-    gem.email = "jim@autonomousmachine.com"
-    gem.homepage = "http://github.com/jim/shhh"
-    gem.authors = ["Jim Benton"]
-    gem.add_dependency "commander"
-    gem.add_dependency "activesupport"    
-    gem.add_development_dependency 'minitest'
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
-end
-
+desc "Runs unit tests"
 task :test do
-  Dir['spec/*_spec.rb'].each do |path|
-    require path
-  end
+  require 'spec/import_spec.rb'
+  require 'spec/generate_spec.rb'
+  require 'spec/sync_spec.rb'
 end
 
 begin
@@ -38,8 +19,6 @@ rescue LoadError
     abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
   end
 end
-
-task :test => :check_dependencies
 
 task :default => :test
 
