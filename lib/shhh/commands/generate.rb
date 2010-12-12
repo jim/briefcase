@@ -3,7 +3,7 @@ module Shhh
     class Generate < Base
       
       def execute
-        intro "Generating dynamic dotfiles in #{dotfiles_path}"
+        intro "Generating classified dotfiles in #{dotfiles_path}"
         
         Dir.glob(File.join(dotfiles_path, "*.#{DYNAMIC_EXTENSION}")) do |path|
           generate_file_for_path(path)

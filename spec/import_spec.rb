@@ -67,8 +67,8 @@ describe Shhh::Commands::Import do
       symlink_must_exist(@original_path, @destination_path)
     end
   
-    it "imports a dynamic dotfile" do
-      dynamic_path = File.join(dotfiles_path, 'test.dynamic')
+    it "imports a classified dotfile" do
+      dynamic_path = File.join(dotfiles_path, 'test.classified')
       create_file @original_path, <<-TEXT
 setting: ABCDEFG
 TEXT
@@ -79,7 +79,7 @@ TEXT
 
       run_command("redact #{@original_path}")
     
-      output_must_contain(/Importing/, /Moving/, /Creating dynamic version at/, /Storing secret value for key: token/)
+      output_must_contain(/Importing/, /Moving/, /Creating classified version at/, /Storing secret value for key: token/)
       secret_must_be_stored('test', :token, 'ABCDEFG')
       symlink_must_exist(@original_path, @destination_path)
       git_ignore_must_include(@destination_path)

@@ -24,7 +24,7 @@ TEXT
       def create_dynamic_version
         destination = generate_dotfile_path(@path)
         dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
-        info "Creating dynamic version at #{dynamic_path}"
+        info "Creating classified version at #{dynamic_path}"
         
         original_content = File.read(destination)
         unless Shhh.testing?

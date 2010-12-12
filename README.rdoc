@@ -91,6 +91,7 @@ The following environment variables can by used to customized the paths used by 
 
 == Changelog
 
+* 0.2.0 Added redact command, use .classified for dynamic dotfiles
 * 0.1.3 The sync command no longer creates symlinks for dynamic files
 * 0.1.2 Added dynamic file generation
 
