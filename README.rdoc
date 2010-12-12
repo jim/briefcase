@@ -1,23 +1,96 @@
 = shhh
 
-This will be a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
+shhh is a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
 
-It is NOT yet ready for actual use.
+== Getting started
+
+  gem install shhh
+  shhh import ~/.bashrc
+  
+At this point, a git repository will have been created at ~/.dotfiles. At some point more of the git workflow will be automated (such as creating a repository at Github), but for now most git tasks are manual:
+  
+  cd ~/.dotfiles
+  git commit -m "Added bashrc"
+
+== Filesystem layout
+
+With shhh, dotfiles are stored in a centralized location (by default ~/.dotfiles), and symlinks are created for these files in the user's home directory. Here is a basic setup for a .gitconfig file:
+
+    +-~/                      Home Directory
+    | +-.shhh_secrets         Secrets file
+    | +-.gitconfig            Symlink to ~/.dotfiles/gitconfig
+    | +-.dotfiles/            Dotfiles directory
+    | | +-gitconfig           Standard Dotfile
+    | | +-gitconfig.dynamic   Classified dotfile
+
+=== Home directory (~)
+
+Where the action happens. Dotfiles that normally exist here are replaced by symlinks to files in the dotfiles directory
+
+=== Dotfiles directory (~/)
+
+Where dotfiles are stored. There are two types of dotfiles.
+
+==== Standard dotfiles
+
+A basic config file that would normally live in a user's home directory.
+
+==== Classified dotfiles
+A config file that contains some secret information. The file is stored, sans secret info, with a '.classified' extension in the repo. The dotfile that is symlinked to the user's home directory is then generated from this file.
+  
+=== Secrets file
+
+This file, be default located at ~/.shhh_secrets, contains the information removed from dotfiles imported using the redact command.
+  
+== Commands
+
+=== import PATH_TO_FILE
+
+Imports a dotfile into thedotfiles directory, moving it to the dotfiles directory and replacing it with a symlink to its new location.
+
+
+=== redact PATH_TO_FILE
+
+Imports a dotfile that contains sensitive information. The user is presented with an editor, where the sensitive information can be removed by replacing secret information with a commented out call to a shhh function
+  
+  # before
+  password: superSecretPassword 
+  
+  # after
+  password: # shhh(:password)
+
+This file is then saved with a '.classified' extension, and the original file is added to ~/.dotfiles/.gitignore so it will not be added to the repository.
+  
+'superSecretPassword' will be stored using the key :password in the secrets file.
+
+
+=== sync
+Creates a symlink in the user's home directory for each dotfile in the dotfiles directory.
+
+
+=== generate
+Creates local version of a classified dotfile, using information found in the secrets file to fill in any that was removed.
+
+
 
 == Note on Patches/Pull Requests
  
 * Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
+* Make your feature addition or bug fix on a topic branch.
+* Add tests for it. This is important so I don't break it in a future version unintentionally.
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+* Send me a pull request.
 
 == Changelog
 
-0.1.3 The sync command no longer creates symlinks for dynamic files
-0.1.2 Added dynamic file generation
+* 0.1.3 The sync command no longer creates symlinks for dynamic files
+* 0.1.2 Added dynamic file generation
+
+== TODO
+
+* rename 'import --dynamic' to 'redact'
+* standardize environment variable names (use 'PATH')
 
 == Copyright
 
