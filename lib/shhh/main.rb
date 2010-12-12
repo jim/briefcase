@@ -7,9 +7,14 @@ program :description, 'Makes it easier to keep dotfiles in git'
 
 command :import do |c|
   c.syntax = 'shhh import PATH'
-  c.description = 'Move PATH to the version controlled directory and symlink from its current location.'
+  c.description = 'Move PATH to the version controlled directory and symlink its previous location to its new one.'
   c.when_called Shhh::Commands::Import
-  c.option '--dynamic', 'Imports dotfile and creates dynamic version. Adds generated version\'s path to ~/.dotfiles/.gitignore.'
+end
+
+command :redact do |c|
+  c.syntax = 'shhh redact PATH'
+  c.description = 'Edit PATH to remove sensitive information, save the edited version to the version controlled directory, and symlink its previous location to its new one, and add to .gitignore.'
+  c.when_called Shhh::Commands::Redact
 end
 
 command :sync do |c|
