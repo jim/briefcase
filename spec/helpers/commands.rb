@@ -12,8 +12,8 @@ def run_command(command, expected_status=0, &block)
     block.call(responses)
   end
   
-  ENV['SHHH_DOTFILES_DIR'] = dotfiles_path
-  ENV['SHHH_HOME_DIR'] = home_path
+  ENV['SHHH_DOTFILES_PATH'] = dotfiles_path
+  ENV['SHHH_HOME_PATH'] = home_path
   ENV['SHHH_SECRETS_PATH'] = secrets_path
   ENV['SHHH_TESTING'] = 'true'
   ENV['RUBYOPT'] = 'rubygems'

@@ -72,6 +72,13 @@ Creates a symlink in the user's home directory for each dotfile in the dotfiles 
 Creates local version of a classified dotfile, using information found in the secrets file to fill in any that was removed.
 
 
+== Configuration
+
+The following environment variables can by used to customized the paths used by shhh:
+
+  SHHH_DOTFILES_PATH: dotfiles path, defaults to SHHH_HOME_PATH/.dotfiles
+  SHHH_HOME_PATH: home path, defaults to ~
+  SHHH_SECRETS_PATH: secrets path, defaults to SHHH_HOME_PATH/.shhh_secrets
 
 == Note on Patches/Pull Requests
  
@@ -90,7 +97,6 @@ Creates local version of a classified dotfile, using information found in the se
 == TODO
 
 * rename 'import --dynamic' to 'redact'
-* standardize environment variable names (use 'PATH')
 
 == Copyright
 
