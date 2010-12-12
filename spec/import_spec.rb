@@ -74,7 +74,7 @@ setting: ABCDEFG
 TEXT
     
       stub_editor_response dynamic_path, <<-TEXT
-setting: # shhh(:token)
+setting: # shhh(token)
 TEXT
 
       run_command("redact #{@original_path}")

@@ -20,7 +20,7 @@ describe Shhh::Commands::Generate do
 
       create_secrets('test' => {:email => 'google@internet.com'})      
       create_file dynamic_path, <<-TEXT
-username: # shhh(:email)
+username: # shhh(email)
 favorite_color: blue
 TEXT
       
@@ -39,7 +39,7 @@ TEXT
       dynamic_path = File.join(dotfiles_path, 'test.classified')
 
       create_file dynamic_path, <<-TEXT
-username: # shhh(:email)
+username: # shhh(email)
 TEXT
       
       run_command("generate")
@@ -47,7 +47,7 @@ TEXT
       output_must_contain(/Generating/, /Secret missing for key: email/)
       
       file_must_contain static_path, <<-TEXT
-username: # shhh(:email)
+username: # shhh(email)
 TEXT
 
       secret_must_be_stored('test', :email, '')
@@ -58,7 +58,7 @@ TEXT
       dynamic_path = File.join(dotfiles_path, 'test.classified')
 
       create_file dynamic_path, <<-TEXT
-username: # shhh(:email)
+username: # shhh(email)
 TEXT
       create_secrets
       
@@ -67,7 +67,7 @@ TEXT
       output_must_contain(/Generating/, /Secret missing for key: email/)
       
       file_must_contain static_path, <<-TEXT
-username: # shhh(:email)
+username: # shhh(email)
 TEXT
 
       secret_must_be_stored('test', :email, '')

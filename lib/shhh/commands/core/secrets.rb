@@ -3,7 +3,7 @@ module Shhh
     module Core
       module Secrets
         
-        COMMENT_REPLACEMENT_REGEX = /^([^#]*)#\s*shhh\(:([a-zA-Z_]+)\)\s*$/
+        COMMENT_REPLACEMENT_REGEX = /^([^#]*)#\s*shhh\(([a-zA-Z_]+)\)\s*$/
         
         def add_secret(path, key, value)
           path_key = File.basename(path)
