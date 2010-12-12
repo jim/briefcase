@@ -57,7 +57,7 @@ Imports a dotfile that contains sensitive information. The user is presented wit
   password: superSecretPassword 
   
   # after
-  password: # shhh(:password)
+  password: # shhh(password)
 
 This file is then saved with a '.classified' extension, and the original file is added to ~/.dotfiles/.gitignore so it will not be added to the repository.
   
