@@ -25,5 +25,16 @@ describe Shhh::Commands::Sync do
     file_must_exist(@file_path)
     symlink_must_exist(@link_path, @file_path)
   end
+  
+  it "does not create links to existing dynamic files" do
+    dynamic_path = File.join(dotfiles_path, 'test.dynamic')
+    dynamic_link_path = File.join(home_path, '.test.dynamic')
+    create_file(dynamic_path)
+
+    run_command("sync")
+
+    output_must_not_contain(/Symlinking/)
+    file_must_not_exist(dynamic_link_path)
+  end
 
 end
