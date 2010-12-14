@@ -26,12 +26,13 @@ TEXT
         dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
         info "Creating classified version at #{dynamic_path}"
         
-        original_content = File.read(destination)
+        content_to_edit = original_content = File.read(destination)
+        
         unless Shhh.testing?
-          original_content.insert 0, EDITING_HELP_TEXT
+          content_to_edit = EDITING_HELP_TEXT + content_to_edit
         end
         
-        write_file(dynamic_path, original_content)
+        write_file(dynamic_path, content_to_edit)
         edited_content = edit_file_with_editor(dynamic_path).gsub!(EDITING_HELP_TEXT, '')
         write_file(dynamic_path, edited_content)
 
