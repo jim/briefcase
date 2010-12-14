@@ -66,6 +66,17 @@ describe Shhh::Commands::Import do
       file_must_have_moved(@original_path, @destination_path)
       symlink_must_exist(@original_path, @destination_path)
     end
+    
+    it "imports a dotfile and commits it to the git repo" do
+      create_trackable_file(@original_path)
+
+      run_command("import #{@original_path} --commit")
+
+      output_must_contain(/Importing/, /Moving/)
+      file_must_have_moved(@original_path, @destination_path)
+      symlink_must_exist(@original_path, @destination_path)
+      dotfiles_directory_must_be_clean
+    end
   
     it "imports a classified dotfile" do
       dynamic_path = File.join(dotfiles_path, 'test.classified')

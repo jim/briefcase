@@ -40,6 +40,10 @@ module Shhh
           end
         end
       end
+      
+      def commit_git_changes(message)
+        puts `cd #{dotfiles_path} && git commit -am "#{message}"`
+      end
 
       def verify_dotfiles_directory_exists
         if !File.directory?(dotfiles_path)

@@ -21,18 +21,22 @@ TEXT
         create_dynamic_version
       end
       
+      def commit_file_to_repo
+        commit_git_changes("Adding #{@dynamic_path}")
+      end
+      
       def create_dynamic_version
         destination = generate_dotfile_path(@path)
-        dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
-        info "Creating classified version at #{dynamic_path}"
+        @dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
+        info "Creating classified version at #{@dynamic_path}"
         
         original_content = File.read(destination)
         unless Shhh.testing?
           original_content.insert 0, EDITING_HELP_TEXT
         end
         
-        write_file(dynamic_path, original_content)
-        edited_content = edit_file_with_editor(dynamic_path)
+        write_file(@dynamic_path, original_content)
+        edited_content = edit_file_with_editor(@dynamic_path)
 
         edited_content.lines.each_with_index do |line, line_index|
           if line =~ COMMENT_REPLACEMENT_REGEX

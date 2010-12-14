@@ -28,7 +28,7 @@ def cleanup_home_directory
 end
 
 def create_git_repo
-  mkdir_p(File.join(dotfiles_path, '.git'))
+  `cd #{dotfiles_path} && git init .`
 end
 
 def create_dotfiles_directory

@@ -9,12 +9,14 @@ command :import do |c|
   c.syntax = 'shhh import PATH'
   c.description = 'Move PATH to the version controlled directory and symlink its previous location to its new one.'
   c.when_called Shhh::Commands::Import
+  c.option '--commit', 'Commit modified files in the repository after importing file'
 end
 
 command :redact do |c|
   c.syntax = 'shhh redact PATH'
   c.description = 'Edit PATH to remove sensitive information, save the edited version to the version controlled directory, and symlink its previous location to its new one, and add to .gitignore.'
   c.when_called Shhh::Commands::Redact
+  c.option '--commit', 'Commit modified files in the repository after importing file'
 end
 
 command :sync do |c|

@@ -53,6 +53,10 @@ def git_ignore_must_include(path)
   ignore_contents.must_match %r{^#{File.basename(path)}$}
 end
 
+def dotfiles_directory_must_be_clean
+  `cd #{dotfiles_path} && git status`.must_match(/nothing to commit \(working directory clean\)/)
+end
+
 def secret_must_be_stored(yaml_key, key, value)
   file_must_exist(secrets_path)
   @secrets = YAML.load_file(secrets_path)

@@ -12,6 +12,7 @@ module Shhh
 
         intro("Importing %s into %s", @path, dotfiles_path)
         import_file
+        commit_file_to_repo if @options.commit
       end
       
       private
@@ -37,6 +38,9 @@ module Shhh
         end
       end
       
+      def commit_file_to_repo
+        commit_git_changes("Adding #{File.basename(@path)}")
+      end
       
       def overwrite_file?
         decision = choose("#{@path} already exists as a dotfile. Do you want to replace it? Your original file will be renamed.", 'replace', 'abort') do |menu|
