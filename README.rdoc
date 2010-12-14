@@ -2,6 +2,10 @@
 
 shhh is a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
 
+
+=== This is alpha software! I haven't published a gem yet for a good reason. Use at your own risk.
+
+
 == Getting started
 
   gem install shhh
