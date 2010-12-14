@@ -11,7 +11,7 @@ module Shhh
 #
 #   password: # shhh(:password)
 #
-
+########################################################################
 TEXT
       
       private
@@ -32,7 +32,8 @@ TEXT
         end
         
         write_file(dynamic_path, original_content)
-        edited_content = edit_file_with_editor(dynamic_path)
+        edited_content = edit_file_with_editor(dynamic_path).gsub!(EDITING_HELP_TEXT, '')
+        write_file(dynamic_path, edited_content)
 
         edited_content.lines.each_with_index do |line, line_index|
           if line =~ COMMENT_REPLACEMENT_REGEX

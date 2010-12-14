@@ -74,6 +74,15 @@ setting: ABCDEFG
 TEXT
     
       stub_editor_response dynamic_path, <<-TEXT
+# Edit the file below, replacing and sensitive information to turn this:
+#
+#   password: superSecretPassword
+#
+# Into:
+#
+#   password: # shhh(:password)
+#
+########################################################################
 setting: # shhh(token)
 TEXT
 
@@ -82,6 +91,7 @@ TEXT
       output_must_contain(/Importing/, /Moving/, /Creating classified version at/, /Storing secret value for key: token/)
       secret_must_be_stored('test', :token, 'ABCDEFG')
       symlink_must_exist(@original_path, @destination_path)
+      file_must_not_match(dynamic_path, 'replacing and sensitive information')
       git_ignore_must_include(@destination_path)
     end
   

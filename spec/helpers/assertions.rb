@@ -16,6 +16,11 @@ def file_must_contain(path, text)
   File.read(path).strip.must_equal(text.strip)
 end
 
+def file_must_not_match(path, regex)
+  file_must_exist(path)
+  File.read(path).strip.wont_match(regex)
+end
+
 def file_must_not_exist(path)
   File.file?(path).must_equal(false, "Expected file to not exist at #{path}")
 end
