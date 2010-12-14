@@ -8,7 +8,7 @@ module Shhh
         def add_secret(path, key, value)
           path_key = File.basename(path)
           secrets[path_key] ||= {}
-          secrets[path_key][key] = value;
+          secrets[path_key][key] = value
         end
       
         def get_secret(path, key)

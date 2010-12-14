@@ -23,7 +23,7 @@ module Shhh
           info "Generating %s", dotfile_path
           content = File.read(path)
           edited_content = content.gsub(COMMENT_REPLACEMENT_REGEX) do |match|
-            key = $2.to_sym
+            key = $2
             if (replacement = get_secret(static_path, key))
               info "Restoring secret value for key: #{key}"
               $1 + replacement
