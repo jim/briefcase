@@ -23,8 +23,10 @@ module Shhh
       def run
         begin
           execute
-          say('')
-          success "Done."
+          unless @options[:chained]
+            say('')
+            success "Done."
+          end
         rescue CommandAborted, UnrecoverableError => e
           error(e.message)
           exit(255)

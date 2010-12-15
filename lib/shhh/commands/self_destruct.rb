@@ -5,11 +5,38 @@ module Shhh
       def execute
         intro "Self-destructing..."
         
-        # generate all classified files, and fail if a secret isn't found
-        # for each unclassified file, remove it's symlink and copy the file back
-        # delete .dotfiles directory
-        # prompt to remove secrets file
+        # if confirm_destruction? 
+          generate_classified_files
+          restore_dotfiles_for_symlinks
+          delete_dotfiles_directory
+          remove_dotfiles_directory
+        # end
+      end
+   
+      private
+      
+      def generate_classified_files
+        Generate.new({}, {:chained => true})
+      end
+      
+      def restore_dotfiles_for_symlinks
         
+      end
+      
+      def delete_dotfiles_directory
+        
+      end
+      
+      def remove_dotfiles_directory
+        
+      end
+      
+      def confirm_destruction?
+        decision = choose("Are you sure you want remove #{dotfiles_path} PERMANENTLY?", 'remove', 'abort') do |menu|
+          menu.index = :letter
+          menu.layout = :one_line
+        end
+        decision == 'remove'
       end
    
     end
