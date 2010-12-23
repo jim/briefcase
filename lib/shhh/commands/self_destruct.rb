@@ -20,7 +20,7 @@ module Shhh
       private
       
       def user_is_aware_of_the_consequences?
-        decision = choose("Are you sure you want to completely remove your dotfiles directory? This can not be undone.", 'remove', 'abort') do |menu|
+        decision = choose("Are you sure you want to completely remove #{dotfiles_path}? This can not be undone.", 'remove', 'abort') do |menu|
           menu.index = :letter
           menu.layout = :one_line
         end
@@ -29,7 +29,7 @@ module Shhh
       end
       
       def generate_classified_files
-        Shhh::Commands::Generate.new({}, {})
+        Generate.new({}, {:chained => true})
       end
       
       def restore_all_dotfiles
@@ -47,6 +47,14 @@ module Shhh
       end
    
       def conditionally_remove_secrets_file
+
+      end
+      
+      def delete_dotfiles_directory
+        
+      end
+      
+      def remove_dotfiles_directory
         
       end
    

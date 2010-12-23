@@ -3,9 +3,9 @@ module Shhh
     module Core
       module Files
         
-        def symlink(path, destination)
-          ln_s(path, destination)
-          info "Symlinking %s -> %s", destination, path
+        def symlink(destination, path)
+          ln_s(destination, path)
+          info "Symlinking %s -> %s", path, destination
         end
 
         def move(path, destination)

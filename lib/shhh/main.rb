@@ -29,6 +29,12 @@ command :generate do |c|
   c.when_called Shhh::Commands::Generate
 end
 
+command :selfdestruct do |c|
+  c.syntax = 'shhh selfdestruct'
+  c.description = 'Revert the system and remove all traces of Shhh'
+  c.when_called Shhh::Commands::SelfDestruct
+end
+
 default_command :help
 
 # command :suggest do |c|

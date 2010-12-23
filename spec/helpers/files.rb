@@ -51,6 +51,10 @@ def create_file(path, text='')
   end
 end
 
+def create_symlink(destination, path)
+  ln_s(destination, path)
+end
+
 def create_trackable_file(path)
   create_file(path, path)
 end
