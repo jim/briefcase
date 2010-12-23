@@ -1,11 +1,13 @@
 require 'rake'
 
 desc "Runs unit tests"
-task :test do
-  require 'spec/import_spec.rb'
-  require 'spec/generate_spec.rb'
-  require 'spec/sync_spec.rb'
+task :spec do
+  Dir['spec/commands/*.rb'].each do |spec_file|
+    require spec_file
+  end
 end
+
+task :test => :spec
 
 begin
   require 'rcov/rcovtask'
@@ -20,7 +22,7 @@ rescue LoadError
   end
 end
 
-task :default => :test
+task :default => :spec
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
