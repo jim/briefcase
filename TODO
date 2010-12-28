@@ -1,0 +1,2 @@
+- should not import a symbolic link
+- should create a git repo even if dotfiles dir already exists

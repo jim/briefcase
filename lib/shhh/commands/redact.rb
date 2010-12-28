@@ -9,9 +9,9 @@ module Shhh
 #
 # Into:
 #
-#   password: # shhh(:password)
+#   password: # shhh(password)
 #
-
+########################################################################
 TEXT
       
       private
@@ -26,17 +26,19 @@ TEXT
         dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
         info "Creating classified version at #{dynamic_path}"
         
-        original_content = File.read(destination)
+        content_to_edit = original_content = File.read(destination)
+        
         unless Shhh.testing?
-          original_content.insert 0, EDITING_HELP_TEXT
+          content_to_edit = EDITING_HELP_TEXT + content_to_edit
         end
         
-        write_file(dynamic_path, original_content)
-        edited_content = edit_file_with_editor(dynamic_path)
+        write_file(dynamic_path, content_to_edit)
+        edited_content = edit_file_with_editor(dynamic_path).gsub!(EDITING_HELP_TEXT, '')
+        write_file(dynamic_path, edited_content)
 
         edited_content.lines.each_with_index do |line, line_index|
           if line =~ COMMENT_REPLACEMENT_REGEX
-            key = $2.to_sym
+            key = $2
             mask = %r{^#{$1}(.*)$}
             value = original_content.lines.to_a[line_index].match(mask)[1]
             info "Storing secret value for key: #{key}"

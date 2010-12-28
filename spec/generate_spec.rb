@@ -18,7 +18,7 @@ describe Shhh::Commands::Generate do
       static_path = File.join(dotfiles_path, 'test')
       dynamic_path = File.join(dotfiles_path, 'test.classified')
 
-      create_secrets('test' => {:email => 'google@internet.com'})      
+      create_secrets('test' => {'email' => 'google@internet.com'})      
       create_file dynamic_path, <<-TEXT
 username: # shhh(email)
 favorite_color: blue
@@ -50,7 +50,7 @@ TEXT
 username: # shhh(email)
 TEXT
 
-      secret_must_be_stored('test', :email, '')
+      secret_must_be_stored('test', 'email', '')
     end
     
     it "adds discovered secrets to the secrets file without values" do
@@ -70,7 +70,7 @@ TEXT
 username: # shhh(email)
 TEXT
 
-      secret_must_be_stored('test', :email, '')
+      secret_must_be_stored('test', 'email', '')
     end
   
   end
