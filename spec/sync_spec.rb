@@ -36,5 +36,18 @@ describe Shhh::Commands::Sync do
     output_must_not_contain(/Symlinking/)
     file_must_not_exist(dynamic_link_path)
   end
+  
+  it "does not create links when a file already exists at thet path" do
+    dotfile_path = File.join(dotfiles_path, 'test')
+    link_path = File.join(home_path, '.test')
+    create_trackable_file(dotfile_path)
+    create_trackable_file(link_path)
+
+    run_command("sync")
+
+    output_must_not_contain(/Symlinking/)
+    output_must_contain(/already exists/, /skipping/)
+    file_must_not_have_moved(link_path)
+  end
 
 end

@@ -26,6 +26,11 @@ module Shhh
         dotfile_path = generate_dotfile_path(basename)
 
         if File.exist?(symlink_path)
+          if !File.symlink?(symlink_path)
+            info "File already exists at #{symlink_path}, skipping..."
+            return
+          end
+          
           if File.readlink(symlink_path) == dotfile_path
             info "Symlink verified: %s -> %s", symlink_path, dotfile_path
             return
