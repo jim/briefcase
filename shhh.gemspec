@@ -26,5 +26,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<commander>, [">= 0"])
   s.add_runtime_dependency(%q<activesupport>, [">= 0"])
   s.add_development_dependency(%q<minitest>, [">= 0"])
+  s.add_development_dependency(%q<open4>, [">= 0"])
 end
 
