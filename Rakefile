@@ -2,9 +2,9 @@ require 'rake'
 
 desc "Runs unit tests"
 task :test do
-  require 'spec/import_spec.rb'
-  require 'spec/generate_spec.rb'
-  require 'spec/sync_spec.rb'
+  require File.expand_path('../spec/import_spec.rb', __FILE__)
+  require File.expand_path('../spec/generate_spec.rb', __FILE__)
+  require File.expand_path('../spec/sync_spec.rb', __FILE__)
 end
 
 begin
