@@ -2,7 +2,7 @@ module Shhh
   module Commands
     module Core
       module Files
-        
+
         def symlink(path, destination)
           ln_s(path, destination)
           info "Symlinking %s -> %s", destination, path
@@ -18,7 +18,7 @@ module Shhh
             file.write(content)
           end
         end
-        
+
         def home_path
           Shhh.home_path
         end
@@ -26,7 +26,7 @@ module Shhh
         def dotfiles_path
           Shhh.dotfiles_path
         end
-      
+
         def secrets_path
           Shhh.secrets_path
         end
@@ -42,8 +42,8 @@ module Shhh
         def visible_name(file_path)
           File.basename(file_path).gsub(/^\./, '')
         end
-        
+
       end
     end
-  end    
+  end
 end

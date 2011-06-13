@@ -17,7 +17,7 @@ class Object
         if block_given?
           block.call(*args)
         else
-          return_value          
+          return_value
         end
       end
     end

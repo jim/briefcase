@@ -13,7 +13,7 @@ module Shhh
       include Core::Files
       include Core::Secrets
       include Core::Output
-      
+
       def initialize(args, options)
         @args = args
         @options = options

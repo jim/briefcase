@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
             Dir['spec/**/*.rb'] +                     # spec files
             Dir['spec/bin/editor'] +                  # spec editor
             %w{README.rdoc LICENSE shhh.gemspec Rakefile}  # misc
-  
+
   s.homepage = %q{http://github.com/jim/shhh}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency(%q<commander>, [">= 0"])
   s.add_runtime_dependency(%q<activesupport>, [">= 0"])
+  s.add_runtime_dependency('octopi', [">= 0"])
   s.add_development_dependency(%q<minitest>, [">= 0"])
   s.add_development_dependency(%q<open4>, [">= 0"])
 end

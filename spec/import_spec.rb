@@ -4,7 +4,7 @@ describe Shhh::Commands::Import do
 
   before do
     create_home_directory
-    
+
     @original_path = File.join(home_path, '.test')
     @destination_path = File.join(dotfiles_path, 'test')
   end
@@ -17,7 +17,7 @@ describe Shhh::Commands::Import do
 
   it "creates a .dotfiles directory if it doesn't exist" do
     create_trackable_file(@original_path)
-    
+
     run_command("import #{@original_path}") do |c|
       c.response(/create one now?/, 'create')
     end
@@ -25,10 +25,10 @@ describe Shhh::Commands::Import do
     output_must_contain(/Creating/)
     output_must_contain(/Initialized/)
     directory_must_exist(dotfiles_path)
-    
+
     directory_must_exist(File.join(dotfiles_path, '.git'))
   end
-  
+
   it "does not create a .dotfiles directory when a users cancels" do
     create_trackable_file(@original_path)
 
@@ -47,16 +47,16 @@ describe Shhh::Commands::Import do
       create_dotfiles_directory
       create_git_repo
     end
-  
+
     after do
       cleanup_dotfiles_directory
     end
-  
+
     it "does not import a nonexistent dotfile" do
       run_command("import .test", 255)
       output_must_contain(/does not exist/)
     end
-  
+
     it "imports a dotfile" do
       create_trackable_file(@original_path)
 
@@ -66,13 +66,13 @@ describe Shhh::Commands::Import do
       file_must_have_moved(@original_path, @destination_path)
       symlink_must_exist(@original_path, @destination_path)
     end
-  
+
     it "imports a classified dotfile" do
       dynamic_path = File.join(dotfiles_path, 'test.classified')
       create_file @original_path, <<-TEXT
 setting: ABCDEFG
 TEXT
-    
+
       stub_editor_response dynamic_path, <<-TEXT
 # Edit the file below, replacing and sensitive information to turn this:
 #
@@ -87,22 +87,22 @@ setting: # shhh(token)
 TEXT
 
       run_command("redact #{@original_path}")
-    
+
       output_must_contain(/Importing/, /Moving/, /Creating classified version at/, /Storing secret value for key: token/)
       secret_must_be_stored('test', 'token', 'ABCDEFG')
       symlink_must_exist(@original_path, @destination_path)
       file_must_not_match(dynamic_path, 'replacing and sensitive information')
       git_ignore_must_include(@destination_path)
     end
-  
+
     describe "collision handling" do
-    
+
       before do
         @relocated_path = File.join(dotfiles_path, 'test.old.1')
         create_trackable_file(@original_path)
         create_trackable_file(@destination_path)
       end
-    
+
       it "renames an existing dotfile when importing a duplicate and instructed to replace it" do
         run_command("import #{@original_path}") do |c|
           c.response(/Do you want to replace it\?/, 'replace')
@@ -113,7 +113,7 @@ TEXT
         file_must_exist(@relocated_path)
         symlink_must_exist(@original_path, @destination_path)
       end
-    
+
       it "renames an existing duplicate dotfile when importing a duplicate and instructed to replace it" do
         duplicate_path = File.join(dotfiles_path, 'test.old.2')
         create_trackable_file(@relocated_path)
@@ -121,11 +121,11 @@ TEXT
         run_command("import #{@original_path}") do |c|
           c.response(/Do you want to replace it\?/, 'replace')
         end
-      
+
         file_must_have_moved(@destination_path, duplicate_path)
         file_must_not_have_moved(@relocated_path)
       end
-  
+
       it "does not modify an existing dotfile when instructed not to" do
         run_command("import #{@original_path}", 255) do |c|
           c.response(/Do you want to replace it\?/, 'abort')
@@ -138,8 +138,8 @@ TEXT
         file_must_not_exist(@relocated_path)
         symlink_must_not_exist(@original_path)
       end
-    
+
     end
-  
+
   end
 end
