@@ -13,20 +13,26 @@ end
 
 command :redact do |c|
   c.syntax = 'shhh redact PATH'
-  c.description = 'Edit PATH to remove sensitive information, save the edited version to the version controlled directory, and symlink its previous location to its new one, and add to .gitignore.'
+  c.description = 'Remove sensitive information, add redacted version to git, symlink, and add original to .gitignore.'
   c.when_called Shhh::Commands::Redact
 end
 
 command :sync do |c|
   c.syntax = 'shhh sync'
-  c.description = 'Updates all symlinks for files included in ~/.dotfiles'
+  c.description = 'Updates all symlinks for all dotfiles'
   c.when_called Shhh::Commands::Sync
 end
 
 command :generate do |c|
   c.syntax = 'shhh generate'
-  c.description = 'Generates static versions of all dynamic dotfiles in ~/.dotfiles'
+  c.description = 'Generates static versions of all dynamic dotfiles'
   c.when_called Shhh::Commands::Generate
+end
+
+command :pull do |c|
+  c.syntax = 'shhh pull'
+  c.description = 'Run `git pull` inside the dotfiles directory'
+  c.when_called Shhh::Commands::Pull
 end
 
 default_command :help
