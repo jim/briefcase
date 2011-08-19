@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name = %q{shhh}
   s.version = Shhh::VERSION
   s.authors = ["Jim Benton"]
-  s.date = %q{2010-12-6}
+  s.date = %q{2010-12-06}
   s.default_executable = %q{shhh}
   s.description = %q{Command line program to migrate dotfiles to a git repo at ~/.dotfiles and generate static dotfiles with secret values.}
   s.email = %q{jim@autonomousmachine.com}
