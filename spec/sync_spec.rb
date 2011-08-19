@@ -1,4 +1,4 @@
-require File.expand_path('spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Shhh::Commands::Sync do
 
@@ -36,7 +36,7 @@ describe Shhh::Commands::Sync do
     output_must_not_contain(/Symlinking/)
     file_must_not_exist(dynamic_link_path)
   end
-  
+
   it "handles finding real dotfiles where symlinks would be" do
     file_path = File.join(home_path, '.test')
     link_path = File.join(dotfiles_path, 'test')
