@@ -23,7 +23,7 @@ TEXT
 
       def import_file
         super
-        create_dynamic_version
+        create_redacted_version
       end
 
       # Copy the file to be imported into the dotfiles directory and append the
@@ -32,10 +32,10 @@ TEXT
       # After saving and closing the file, the differences are examined and the
       # replaces values are detected. These values and their replacement keys
       # are stored in the secrets file.
-      def create_dynamic_version
+      def create_redacted_version
         destination = generate_dotfile_path(@path)
-        dynamic_path = destination + ".#{CLASSIFIED_EXTENSION}"
-        info "Creating classified version at #{dynamic_path}"
+        redacted_path = destination + ".#{CLASSIFIED_EXTENSION}"
+        info "Creating classified version at #{redacted_path}"
 
         content_to_edit = original_content = File.read(destination)
 
@@ -43,9 +43,9 @@ TEXT
           content_to_edit = EDITING_HELP_TEXT + content_to_edit
         end
 
-        write_file(dynamic_path, content_to_edit)
-        edited_content = edit_file_with_editor(dynamic_path).gsub!(EDITING_HELP_TEXT, '')
-        write_file(dynamic_path, edited_content)
+        write_file(redacted_path, content_to_edit)
+        edited_content = edit_file_with_editor(redacted_path).gsub!(EDITING_HELP_TEXT, '')
+        write_file(redacted_path, edited_content)
 
         edited_content.lines.each_with_index do |line, line_index|
           if line =~ COMMENT_REPLACEMENT_REGEX

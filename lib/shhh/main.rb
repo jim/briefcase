@@ -25,7 +25,7 @@ end
 
 command :generate do |c|
   c.syntax = 'shhh generate'
-  c.description = 'Generates static versions of all dynamic dotfiles in ~/.dotfiles'
+  c.description = 'Generates static versions of all redacted dotfiles in ~/.dotfiles'
   c.when_called Shhh::Commands::Generate
 end
 

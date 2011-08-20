@@ -16,10 +16,10 @@ describe Shhh::Commands::Generate do
 
     it "generates a static version of a classified dotfile" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.classified')
 
       create_secrets('test' => {'email' => 'google@internet.com'})
-      create_file dynamic_path, <<-TEXT
+      create_file redacted_path, <<-TEXT
 username: # shhh(email)
 favorite_color: blue
 TEXT
@@ -36,9 +36,9 @@ TEXT
 
     it "create a secrets file and adds discovered secrets to it" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.classified')
 
-      create_file dynamic_path, <<-TEXT
+      create_file redacted_path, <<-TEXT
 username: # shhh(email)
 TEXT
 
@@ -55,9 +55,9 @@ TEXT
 
     it "adds discovered secrets to the secrets file without values" do
       static_path = File.join(dotfiles_path, 'test')
-      dynamic_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.classified')
 
-      create_file dynamic_path, <<-TEXT
+      create_file redacted_path, <<-TEXT
 username: # shhh(email)
 TEXT
       create_secrets
