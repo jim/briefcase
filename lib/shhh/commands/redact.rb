@@ -34,7 +34,7 @@ TEXT
       # are stored in the secrets file.
       def create_dynamic_version
         destination = generate_dotfile_path(@path)
-        dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
+        dynamic_path = destination + ".#{CLASSIFIED_EXTENSION}"
         info "Creating classified version at #{dynamic_path}"
 
         content_to_edit = original_content = File.read(destination)

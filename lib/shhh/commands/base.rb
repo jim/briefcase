@@ -18,7 +18,7 @@ module Shhh
     class Base
 
       # The extension to append to files when redacting information
-      DYNAMIC_EXTENSION = 'classified'
+      CLASSIFIED_EXTENSION = 'classified'
 
       include FileUtils
       include Core::Files

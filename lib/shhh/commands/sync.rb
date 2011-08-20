@@ -21,7 +21,7 @@ module Shhh
         Dir.glob(File.join(dotfiles_path, '*')) do |path|
           basename = File.basename(path)
           next if %w{. ..}.include?(basename)
-          next if basename =~ /.#{DYNAMIC_EXTENSION}$/
+          next if basename =~ /.#{CLASSIFIED_EXTENSION}$/
 
           if basename.include?('.old')
             warn "Skipping %s, you may want to remove it.", path
