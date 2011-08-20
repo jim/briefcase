@@ -67,8 +67,8 @@ describe Shhh::Commands::Import do
       symlink_must_exist(@original_path, @destination_path)
     end
 
-    it "imports a classified dotfile" do
-      redacted_path = File.join(dotfiles_path, 'test.classified')
+    it "imports a redacted dotfile" do
+      redacted_path = File.join(dotfiles_path, 'test.redacted')
       create_file @original_path, <<-TEXT
 setting: ABCDEFG
 TEXT
@@ -88,7 +88,7 @@ TEXT
 
       run_command("redact #{@original_path}")
 
-      output_must_contain(/Importing/, /Moving/, /Creating classified version at/, /Storing secret value for key: token/)
+      output_must_contain(/Importing/, /Moving/, /Creating redacted version at/, /Storing secret value for key: token/)
       secret_must_be_stored('test', 'token', 'ABCDEFG')
       symlink_must_exist(@original_path, @destination_path)
       file_must_not_match(redacted_path, 'replacing and sensitive information')

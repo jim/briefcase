@@ -38,7 +38,7 @@ end
 def create_secrets(hash={})
   File.open(secrets_path, "w") do |file|
     file.write(hash.to_yaml)
-  end  
+  end
 end
 
 def cleanup_dotfiles_directory

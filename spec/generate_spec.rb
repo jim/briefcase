@@ -14,9 +14,9 @@ describe Shhh::Commands::Generate do
       cleanup_home_directory
     end
 
-    it "generates a static version of a classified dotfile" do
+    it "generates a static version of a redacted dotfile" do
       static_path = File.join(dotfiles_path, 'test')
-      redacted_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.redacted')
 
       create_secrets('test' => {'email' => 'google@internet.com'})
       create_file redacted_path, <<-TEXT
@@ -36,7 +36,7 @@ TEXT
 
     it "create a secrets file and adds discovered secrets to it" do
       static_path = File.join(dotfiles_path, 'test')
-      redacted_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.redacted')
 
       create_file redacted_path, <<-TEXT
 username: # shhh(email)
@@ -55,7 +55,7 @@ TEXT
 
     it "adds discovered secrets to the secrets file without values" do
       static_path = File.join(dotfiles_path, 'test')
-      redacted_path = File.join(dotfiles_path, 'test.classified')
+      redacted_path = File.join(dotfiles_path, 'test.redacted')
 
       create_file redacted_path, <<-TEXT
 username: # shhh(email)

@@ -27,8 +27,8 @@ describe Shhh::Commands::Sync do
   end
 
   it "does not create links to existing dynamic files" do
-    redacted_path = File.join(dotfiles_path, 'test.classified')
-    dynamic_link_path = File.join(home_path, '.test.classified')
+    redacted_path = File.join(dotfiles_path, 'test.redacted')
+    dynamic_link_path = File.join(home_path, '.test.redacted')
     create_file(redacted_path)
 
     run_command("sync")

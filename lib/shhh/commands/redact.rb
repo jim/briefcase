@@ -27,15 +27,15 @@ TEXT
       end
 
       # Copy the file to be imported into the dotfiles directory and append the
-      # classified extension to its name. This file is then opened in an
+      # redacted extension to its name. This file is then opened in an
       # editor, where the user has a chance to replace sensitive information.
       # After saving and closing the file, the differences are examined and the
       # replaces values are detected. These values and their replacement keys
       # are stored in the secrets file.
       def create_redacted_version
         destination = generate_dotfile_path(@path)
-        redacted_path = destination + ".#{CLASSIFIED_EXTENSION}"
-        info "Creating classified version at #{redacted_path}"
+        redacted_path = destination + ".#{REDACTED_EXTENSION}"
+        info "Creating redacted version at #{redacted_path}"
 
         content_to_edit = original_content = File.read(destination)
 

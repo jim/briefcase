@@ -1,15 +1,15 @@
 module Shhh
   module Commands
 
-    # Generate looks through through the dotfiles directory for any classified
+    # Generate looks through through the dotfiles directory for any redacted
     # dotfiles. It attempts to generate a normal version of each file it finds,
     # using the values stored in the .shhh_secrets file.
     class Generate < Base
 
       def execute
-        intro "Generating classified dotfiles in #{dotfiles_path}"
+        intro "Generating redacted dotfiles in #{dotfiles_path}"
 
-        Dir.glob(File.join(dotfiles_path, "*.#{CLASSIFIED_EXTENSION}")) do |path|
+        Dir.glob(File.join(dotfiles_path, "*.#{REDACTED_EXTENSION}")) do |path|
           generate_file_for_path(path)
         end
 
@@ -18,16 +18,16 @@ module Shhh
 
       private
 
-      # Generates a standard dotfile from a classified dotfile
+      # Generates a standard dotfile from a redacted dotfile
       #
       # This method will attempt to find secret values in the secrets file. If
       # any aren't found, it will print a message about the offending key and
       # add that key to the secrets file without a value (to make it easier for
       # users to fill in the missing value).
       #
-      # path - the path to the classified dotfile
+      # path - the path to the redacted dotfile
       def generate_file_for_path(path)
-        static_path = path.gsub(/.#{CLASSIFIED_EXTENSION}$/, '')
+        static_path = path.gsub(/.#{REDACTED_EXTENSION}$/, '')
         basename = File.basename(static_path)
         dotfile_path = generate_dotfile_path(basename)
 

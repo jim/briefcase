@@ -18,7 +18,7 @@ module Shhh
     class Base
 
       # The extension to append to files when redacting information
-      CLASSIFIED_EXTENSION = 'classified'
+      REDACTED_EXTENSION = 'redacted'
 
       include FileUtils
       include Core::Files
