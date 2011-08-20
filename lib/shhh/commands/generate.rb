@@ -1,5 +1,9 @@
 module Shhh
   module Commands
+
+    # Generate looks through through the dotfiles directory for any classified
+    # dotfiles. It attempts to generate a normal version of each file it finds,
+    # using the values stored in the .shhh_secrets file.
     class Generate < Base
 
       def execute
@@ -14,6 +18,14 @@ module Shhh
 
       private
 
+      # Generates a standard dotfile from a classified dotfile
+      #
+      # This method will attempt to find secret values in the secrets file. If
+      # any aren't found, it will print a message about the offending key and
+      # add that key to the secrets file without a value (to make it easier for
+      # users to fill in the missing value).
+      #
+      # path - the path to the classified dotfile
       def generate_file_for_path(path)
         static_path = path.gsub(/.#{DYNAMIC_EXTENSION}$/, '')
         basename = File.basename(static_path)

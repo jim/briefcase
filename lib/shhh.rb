@@ -7,8 +7,13 @@ require File.expand_path('shhh/version', File.dirname(__FILE__))
 
 module Shhh
 
+  # The user's home path
   DEFAULT_HOME_PATH = '~'
+
+  # The default path wher dotfiles are stored
   DEFAULT_DOTFILES_PATH = File.join(DEFAULT_HOME_PATH, '.dotfiles')
+
+  # The default path to where secret information is stored
   DEFAULT_SECRETS_PATH = File.join(DEFAULT_HOME_PATH, '.shhh_secrets')
 
   class << self

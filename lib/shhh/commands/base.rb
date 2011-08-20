@@ -5,8 +5,19 @@ require File.expand_path('core/output', File.dirname(__FILE__))
 
 module Shhh
   module Commands
+
+    # Shhh::Commands::Base is the base class for all commands in the system.
+    #
+    # Most behavior is actually defined by Core modules.
+    #
+    # Actual commands, which are created by creating a subclass of Base, must
+    # implement an instance method `execute`.
+    #
+    # Running a Commands::Base subclass is done by instantiating it with
+    # arguments and options.
     class Base
 
+      # The extension to append to files when redacting information
       DYNAMIC_EXTENSION = 'classified'
 
       include FileUtils
@@ -20,6 +31,9 @@ module Shhh
         run
       end
 
+      # Begin execution of this command. Subclasses should not override this
+      # method, instead, they should define an `execute` method that performs
+      # their actual work.
       def run
         begin
           execute
@@ -31,6 +45,18 @@ module Shhh
         end
       end
 
+      # Perform this command's work.
+      #
+      # This method should be overridden in subclasses.
+      def execute
+        raise "Not Implemented"
+      end
+
+      # Add a file to the .gitignore file inside the dotfiles_path
+      #
+      # filename - The String filename to be appended to the list of ignored paths
+      #
+      # Returns the Integer number of bytes written.
       def add_to_git_ignore(filename)
         File.open(File.join(dotfiles_path, '.gitignore'), "a+") do |file|
           contents = file.read
@@ -41,6 +67,12 @@ module Shhh
         end
       end
 
+      # Check to see if the dotfiles directory exists. If it doesn't, present
+      # the user with the option to create it. If the user accepts, the
+      # directory is created.
+      #
+      # If the user declines creating the directory, a CommandAborted exception
+      # is raised.
       def verify_dotfiles_directory_exists
         if !File.directory?(dotfiles_path)
           choice = choose("You don't appear to have a git repository at #{dotfiles_path}. Do you want to create one now?", 'create', 'abort') do |menu|

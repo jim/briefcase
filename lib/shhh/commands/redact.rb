@@ -1,5 +1,10 @@
 module Shhh
   module Commands
+
+    # Redact is similar to Import, but it will also prompt the user to replace
+    # any secure information in the file with a special replacement syntax. Any
+    # values replaces in this way will be stored in the secrets file, and the
+    # dotfile will be imported sans secrets.
     class Redact < Import
 
       EDITING_HELP_TEXT = <<-TEXT
@@ -21,6 +26,12 @@ TEXT
         create_dynamic_version
       end
 
+      # Copy the file to be imported into the dotfiles directory and append the
+      # classified extension to its name. This file is then opened in an
+      # editor, where the user has a chance to replace sensitive information.
+      # After saving and closing the file, the differences are examined and the
+      # replaces values are detected. These values and their replacement keys
+      # are stored in the secrets file.
       def create_dynamic_version
         destination = generate_dotfile_path(@path)
         dynamic_path = destination + ".#{DYNAMIC_EXTENSION}"
@@ -50,6 +61,10 @@ TEXT
         add_to_git_ignore(visible_name(destination))
       end
 
+      # Open a file with an editor. The editor can be specified using the
+      # EDITOR environment variable, with vim being the current default.
+      #
+      # Returns the content of the file after the editor is closed.
       def edit_file_with_editor(path)
         editor_command = ENV['EDITOR'] || 'vim'
         system(editor_command, path)
