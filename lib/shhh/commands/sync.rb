@@ -34,7 +34,7 @@ module Shhh
       private
 
       # Verifies if a symlink following shhh's conventions exists for the
-      # supplied filename. Created a symlink if it doesn't exist, or if there
+      # supplied filename. Creates a symlink if it doesn't exist, or if there
       # is a corectly named symlink with the wrong target.
       #
       # basename - The String filename to use when building paths
@@ -44,16 +44,17 @@ module Shhh
         dotfile_path = generate_dotfile_path(basename)
 
         if File.exist?(symlink_path)
-          if File.file?(symlink_path)
+          if File.symlink?(symlink_path)
+            if File.readlink(symlink_path) == dotfile_path
+              info "Symlink verified: %s -> %s", symlink_path, dotfile_path
+              return
+            else
+              info "Removing outdated symlink %s", symlink_path
+              rm(symlink_path)
+            end
+          else
             info "Found normal file at %s, skipping...", symlink_path
             return
-          end
-          if File.readlink(symlink_path) == dotfile_path
-            info "Symlink verified: %s -> %s", symlink_path, dotfile_path
-            return
-          else
-            info "Removing outdated symlink %s", symlink_path
-            rm(symlink_path)
           end
         end
 

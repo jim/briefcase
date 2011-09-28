@@ -1,7 +1,6 @@
 require 'minitest/spec'
 require 'minitest/mock'
 
-require 'highline'
 MiniTest::Unit.autorun
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
