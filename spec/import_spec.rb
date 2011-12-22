@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Shhh::Commands::Import do
+describe Briefcase::Commands::Import do
 
   before do
     create_home_directory
@@ -80,10 +80,10 @@ TEXT
 #
 # Into:
 #
-#   password: # shhh(password)
+#   password: # briefcase(password)
 #
 ########################################################################
-setting: # shhh(token)
+setting: # briefcase(token)
 TEXT
 
       run_command("redact #{@original_path}")

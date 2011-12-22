@@ -3,10 +3,10 @@ require File.expand_path('core/secrets', File.dirname(__FILE__))
 require File.expand_path('core/files', File.dirname(__FILE__))
 require File.expand_path('core/output', File.dirname(__FILE__))
 
-module Shhh
+module Briefcase
   module Commands
 
-    # Shhh::Commands::Base is the base class for all commands in the system.
+    # Briefcase::Commands::Base is the base class for all commands in the system.
     #
     # Most behavior is actually defined by Core modules.
     #

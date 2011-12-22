@@ -19,7 +19,7 @@ def run_command(command, expected_status=0, &block)
   ENV['RUBYOPT'] = 'rubygems'
   ENV['EDITOR'] = File.expand_path('../bin/editor', File.dirname(__FILE__))
 
-  full_command = "./bin/shhh #{command}"
+  full_command = "./bin/briefcase #{command}"
   full_command << " --trace" if ENV['SHHH_TEST_TRACE']
 
   status = Open4.popen4(full_command) do |pid, stdin, stdout, stderr|

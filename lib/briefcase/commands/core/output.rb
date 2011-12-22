@@ -1,4 +1,4 @@
-module Shhh
+module Briefcase
   module Commands
     module Core
       module Output

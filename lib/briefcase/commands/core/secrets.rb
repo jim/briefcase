@@ -1,9 +1,9 @@
-module Shhh
+module Briefcase
   module Commands
     module Core
       module Secrets
 
-        COMMENT_REPLACEMENT_REGEX = /^([^#]*)#\s*shhh\(([a-zA-Z_]+)\)\s*$/
+        COMMENT_REPLACEMENT_REGEX = /^([^#]*)#\s*briefcase\(([a-zA-Z_]+)\)\s*$/
 
         # Add a key and value to the secrets file for the given file.
         #

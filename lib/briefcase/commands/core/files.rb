@@ -1,4 +1,4 @@
-module Shhh
+module Briefcase
   module Commands
     module Core
       module Files
@@ -34,17 +34,17 @@ module Shhh
 
         # Returns the globally configured home path for the user.
         def home_path
-          Shhh.home_path
+          Briefcase.home_path
         end
 
         # Returns the globally configured dotfiles path.
         def dotfiles_path
-          Shhh.dotfiles_path
+          Briefcase.dotfiles_path
         end
 
         # Returns the globally configured secrets path.
         def secrets_path
-          Shhh.secrets_path
+          Briefcase.secrets_path
         end
 
         # Build a full dotfile path from a given file path, using the gobal

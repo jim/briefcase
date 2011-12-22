@@ -1,6 +1,6 @@
-= shhh
+= briefcase
 
-shhh is a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
+briefcase is a tool to facilitate keeping dotfiles in git, including those with private information (such as .gitconfig).
 
 
 === This is alpha software! I haven't published a gem yet for a good reason. Use at your own risk.
@@ -8,8 +8,8 @@ shhh is a tool to facilitate keeping dotfiles in git, including those with priva
 
 == Getting started
 
-  gem install shhh
-  shhh import ~/.bashrc
+  gem install briefcase
+  briefcase import ~/.bashrc
 
 At this point, a git repository will have been created at ~/.dotfiles. At some point more of the git workflow will be automated (such as creating a repository at Github), but for now most git tasks are manual:
 
@@ -18,10 +18,10 @@ At this point, a git repository will have been created at ~/.dotfiles. At some p
 
 == Filesystem layout
 
-With shhh, dotfiles are stored in a centralized location (by default ~/.dotfiles), and symlinks are created for these files in the user's home directory. Here is a basic setup for a .gitconfig file:
+With briefcase, dotfiles are stored in a centralized location (by default ~/.dotfiles), and symlinks are created for these files in the user's home directory. Here is a basic setup for a .gitconfig file:
 
     +-~/                      Home Directory
-    | +-.shhh_secrets         Secrets file
+    | +-.briefcase_secrets         Secrets file
     | +-.gitconfig            Symlink to ~/.dotfiles/gitconfig
     | +-.dotfiles/            Dotfiles directory
     | | +-gitconfig           Standard Dotfile
@@ -44,7 +44,7 @@ A config file that contains some secret information. The file is stored, sans se
 
 === Secrets file
 
-This file, be default located at ~/.shhh_secrets, contains the information removed from dotfiles imported using the redact command.
+This file, be default located at ~/.briefcase_secrets, contains the information removed from dotfiles imported using the redact command.
 
 == Commands
 
@@ -55,13 +55,13 @@ Imports a dotfile into thedotfiles directory, moving it to the dotfiles director
 
 === redact PATH_TO_FILE
 
-Imports a dotfile that contains sensitive information. The user is presented with an editor, where the sensitive information can be removed by replacing secret information with a commented out call to a shhh function
+Imports a dotfile that contains sensitive information. The user is presented with an editor, where the sensitive information can be removed by replacing secret information with a commented out call to a briefcase function
 
   # before
   password: superSecretPassword
 
   # after
-  password: # shhh(password)
+  password: # briefcase(password)
 
 This file is then saved with a '.redacted' extension, and the original file is added to ~/.dotfiles/.gitignore so it will not be added to the repository.
 
@@ -78,11 +78,11 @@ Creates local version of a redacted dotfile, using information found in the secr
 
 == Configuration
 
-The following environment variables can by used to customized the paths used by shhh:
+The following environment variables can by used to customized the paths used by briefcase:
 
   SHHH_DOTFILES_PATH: dotfiles path, defaults to SHHH_HOME_PATH/.dotfiles
   SHHH_HOME_PATH: home path, defaults to ~
-  SHHH_SECRETS_PATH: secrets path, defaults to SHHH_HOME_PATH/.shhh_secrets
+  SHHH_SECRETS_PATH: secrets path, defaults to SHHH_HOME_PATH/.briefcase_secrets
 
 == Note on Patches/Pull Requests
 

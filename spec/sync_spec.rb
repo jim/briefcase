@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Shhh::Commands::Sync do
+describe Briefcase::Commands::Sync do
 
   before do
     create_home_directory

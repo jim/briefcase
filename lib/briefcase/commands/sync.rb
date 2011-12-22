@@ -1,4 +1,4 @@
-module Shhh
+module Briefcase
   module Commands
 
     # Sync scans the dotfiles directory for dotfiles, and creates any missing
@@ -33,7 +33,7 @@ module Shhh
 
       private
 
-      # Verifies if a symlink following shhh's conventions exists for the
+      # Verifies if a symlink following briefcase's conventions exists for the
       # supplied filename. Creates a symlink if it doesn't exist, or if there
       # is a corectly named symlink with the wrong target.
       #

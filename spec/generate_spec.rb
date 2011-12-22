@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Shhh::Commands::Generate do
+describe Briefcase::Commands::Generate do
 
   describe "with an existing dotfiles directory" do
 
@@ -20,7 +20,7 @@ describe Shhh::Commands::Generate do
 
       create_secrets('test' => {'email' => 'google@internet.com'})
       create_file redacted_path, <<-TEXT
-username: # shhh(email)
+username: # briefcase(email)
 favorite_color: blue
 TEXT
 
@@ -39,7 +39,7 @@ TEXT
       redacted_path = File.join(dotfiles_path, 'test.redacted')
 
       create_file redacted_path, <<-TEXT
-username: # shhh(email)
+username: # briefcase(email)
 TEXT
 
       run_command("generate")
@@ -47,7 +47,7 @@ TEXT
       output_must_contain(/Generating/, /Secret missing for key: email/)
 
       file_must_contain static_path, <<-TEXT
-username: # shhh(email)
+username: # briefcase(email)
 TEXT
 
       secret_must_be_stored('test', 'email', '')
@@ -58,7 +58,7 @@ TEXT
       redacted_path = File.join(dotfiles_path, 'test.redacted')
 
       create_file redacted_path, <<-TEXT
-username: # shhh(email)
+username: # briefcase(email)
 TEXT
       create_secrets
 
@@ -67,7 +67,7 @@ TEXT
       output_must_contain(/Generating/, /Secret missing for key: email/)
 
       file_must_contain static_path, <<-TEXT
-username: # shhh(email)
+username: # briefcase(email)
 TEXT
 
       secret_must_be_stored('test', 'email', '')

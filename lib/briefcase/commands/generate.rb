@@ -1,9 +1,9 @@
-module Shhh
+module Briefcase
   module Commands
 
     # Generate looks through through the dotfiles directory for any redacted
     # dotfiles. It attempts to generate a normal version of each file it finds,
-    # using the values stored in the .shhh_secrets file.
+    # using the values stored in the .briefcase_secrets file.
     class Generate < Base
 
       def execute

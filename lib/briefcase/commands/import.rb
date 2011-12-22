@@ -1,6 +1,6 @@
 require 'tempfile'
 
-module Shhh
+module Briefcase
   module Commands
 
     # Import copies a dotfile into the dotfiles directory and created a

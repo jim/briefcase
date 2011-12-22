@@ -1,4 +1,4 @@
-module Shhh
+module Briefcase
   module Commands
 
     # Redact is similar to Import, but it will also prompt the user to replace
@@ -14,7 +14,7 @@ module Shhh
 #
 # Into:
 #
-#   password: # shhh(password)
+#   password: # briefcase(password)
 #
 ########################################################################
 TEXT
@@ -39,7 +39,7 @@ TEXT
 
         content_to_edit = original_content = File.read(destination)
 
-        unless Shhh.testing?
+        unless Briefcase.testing?
           content_to_edit = EDITING_HELP_TEXT + content_to_edit
         end
 
