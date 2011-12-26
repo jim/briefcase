@@ -11,20 +11,41 @@ private information (such as `.gitconfig`).
 
 ## Getting started
 
-    gem install briefcase
-    briefcase import ~/.bashrc
+<pre>
+$ gem install briefcase
+$ briefcase import ~/.bashrc
 
-    You don't appear to have a git repository at #{dotfiles_path}. Do you want to create one now?
-    $ y
-    Creating git repository at #{dotfiles_path}
+You don't appear to have a git repository at /Users/jim/.dotfiles. Do you want
+to create one now?
+?  (create or abort) c
+<span class="info">Creating git repository at /Users/jim/.dotfiles</span>
+</pre>
 
+At this point, a git repository will have been created at `~/.dotfiles`,
+and `bashrc` will have been moved there and added to the git index. You
+can verify this using `briefcase git`, which passes everything through to
+the `git` executable (assuming it is installed and on your path).
 
-At this point, a git repository will have been created at `~/.dotfiles`. At some
-point more of the git workflow will be automated (such as creating a repository
-at Github), but for now most git tasks are manual:
+    $ briefcase git status
 
-    cd ~/.dotfiles
-    git commit -m "Added bashrc"
+    # On branch master
+    # Changes to be committed:
+    #   (use "git rm --cached <file>..." to unstage)
+    #
+    # new file:   bashrc
+
+You'll probably want to check the `bashrc` file into your new git repo. Which
+can be done using the `git` command again.
+
+    $ briefcase git ci -m "Added bashrc"
+
+Great. You've successfully added the first file to your new dotfiles
+repo. I recommend creating a repo on Github or another Git hosting
+service, adding it as a remote, and pushing your dotfiles there for
+safekeeping.
+
+    $ git remote add origin git@github.com:jim/dotfiles.git
+    $ git push origin master
 
 ## Commands
 
@@ -35,6 +56,7 @@ and replacing it with a symlink to its new location.
 
 <pre>
 $ briefcase import ~/.vimrc
+
 <span class="intro">Importing /Users/jim/.vimrc into /Users/jim/.dotfiles</span>
 <span class="info">Moving /Users/jim/.vimrc to /Users/jim/.dotfiles/vimrc</span>
 <span class="info">Symlinking /Users/jim/.vimrc -> /Users/jim/.dotfiles/vimrc</span>
@@ -47,41 +69,84 @@ Imports a dotfile that contains sensitive information.
 
 <pre>
 $ briefcase redact ~/.config_with_secrets
+
 <span class="intro">Importing /Users/jim/.config_with_secrets into /Users/jim/.dotfiles</span>
 <span class="info">Moving /Users/jim/.config_with_secrsts to /Users/jim/.dotfiles/config_with_secrets</span>
 <span class="info">Symlinking /Users/jim/.config_with_secrets -> /Users/jim/.dotfiles/config_with_secrets</span>
 <span class="info">Creating redacted version at /Users/jim/.dotfiles/config_with_secrets.redacted</span>
+</pre>
 
-editor opens, after making changes as detailed above:
+The user is presented with an editor (either `vim` or the value of the environment
+variable `EDITOR`, where sensitive information like this:
 
+    password: superSecretPassword
+
+can be replaced with what appears to be a commented out call to a briefcase function:
+
+    password: # briefcase(password)
+
+When the file is saved and closed, Briefcase will detect this change and save
+`superSecretPassword` to the sercets file using the key `password`.
+
+The edited file is then saved with a `.redacted` extension, and the original file is
+added to `~/.dotfiles/.gitignore` so it will not be added to the repository.
+
+<pre>
 <span class="info">Storing secret value for key: password</span>
 <span class="info">Adding /Users/jim/.dotfiles/config_with_secrets.redacted to /Users/jim/.dotfiles/.gitignore</span>
 <span class="success">Done.</span>
 </pre>
 
-The user is presented with an editor, where the sensitive information can be
-removed by replacing secret information with a commented out call to a
-briefcase function:
-
-    # before
-    password: superSecretPassword
-
-    # after
-    password: # briefcase(password)
-
-This file is then saved with a `.redacted` extension, and the original file is
-added to `~/.dotfiles/.gitignore` so it will not be added to the repository.
-
-`superSecretPassword` will be stored using the key `password` in the secrets file.
 
 ### sync
 Creates a symlink in the user's home directory for each dotfile in the dotfiles
 directory.
 
-### generate
-Creates local version of a redacted dotfile, using information found in the
-secrets file to fill in any that was removed.
+<pre>
+$ briefcase sync
 
+<span class="intro">Synchronizing dotfiles between /Users/jimb/.dotfiles and /Users/jimb</span>
+<span class="info">Symlink verified: /Users/jimb/.ackrc -> /Users/jimb/.dotfiles/ackrc</span>
+<span class="info">Symlink verified: /Users/jimb/.autotest -> /Users/jimb/.dotfiles/autotest</span>
+<span class="info">Symlink verified: /Users/jimb/.gitconfig -> /Users/jimb/.dotfiles/gitconfig</span>
+<span class="info">Symlink verified: /Users/jimb/.gvimrc -> /Users/jimb/.dotfiles/gvimrc</span>
+<span class="info">Symlink verified: /Users/jimb/.irbrc -> /Users/jimb/.dotfiles/irbrc</span>
+<span class="info">Symlink verified: /Users/jimb/.vim -> /Users/jimb/.dotfiles/vim</span>
+<span class="info">Symlink verified: /Users/jimb/.vimrc -> /Users/jimb/.dotfiles/vimrc</span>
+<span class="info">Symlink verified: /Users/jimb/.zshenv -> /Users/jimb/.dotfiles/zshenv</span>
+<span class="info">Symlink verified: /Users/jimb/.zshrc -> /Users/jimb/.dotfiles/zshrc</span>
+<span class="success">Done.</span>
+</pre>
+
+### generate
+
+Creates local versions of all redacted dotfiles, using information found in the
+secrets file to fill in any values that were removed.
+
+<pre>
+$ briefcase generate
+
+<span class="intro">Generating redacted dotfiles in /Users/jim/.dotfiles</span>
+<span class="info">Generating /Users/jim/.dotfiles/gitconfig</span>
+<span class="info">Loading existing secrets from /Users/jim/.briefcase_secrets</span>
+<span class="info">Restoring secret value for key: git_user</span>
+<span class="info">Restoring secret value for key: git_email</span>
+<span class="info">Restoring secret value for key: github_user</span>
+<span class="info">Restoring secret value for key: github_token</span>
+<span class="success">Done.</span>
+</pre>
+
+
+### git
+
+The `git` command passes all commands through to the `git` executable,
+assuming it is installed on your path. All commands are executed in your
+dotfiles directory.
+
+    $ briefcase git status
+
+    # On branch master
+    nothing to commit (working directory clean)
 
 ## Filesystem layout
 
@@ -89,21 +154,30 @@ With briefcase, dotfiles are stored in a centralized location (by default ~/.dot
 and symlinks are created for these files in the user's home directory. Here
 is a basic setup for a .gitconfig file:
 
-    +-~/                      Home Directory
+    +-~/                      Home directory
     | +-.briefcase_secrets    Secrets file
     | +-.gitconfig            Symlink to ~/.dotfiles/gitconfig
     | +-.dotfiles/            Dotfiles directory
     | | +-gitconfig           Standard Dotfile
     | | +-gitconfig.dynamic   Redacted dotfile
 
-### Home directory (~)
+### Home directory
+
 
 Where the action happens. Dotfiles that normally exist here are replaced by
-symlinks to files in the dotfiles directory
+symlinks to files in the dotfiles directory.
 
-### Dotfiles directory (~/)
+> **Default location: `~`**    
+> Override by setting BRIEFCASE_HOME_PATH in your environment.
 
-Where dotfiles are stored. There are two types of dotfiles.
+### Dotfiles directory
+
+Where dotfiles are stored.
+
+> **Default location: `~/.dotfiles`**    
+> Override by setting BRIEFCASE_DOTFILES_PATH in your environment.
+
+There are two types of dotfiles.
 
 #### Standard dotfiles
 
@@ -116,17 +190,11 @@ symlinked to the user's home directory is then generated from this file.
 
 ### Secrets file
 
-This file, be default located at ~/.briefcase_secrets, contains the information
-removed from dotfiles imported using the redact command.
+This file contains the information removed from dotfiles imported using the
+redact command.
 
-
-## Configuration
-
-The following environment variables can by used to customized the paths used by briefcase:
-
-    BRIEFCASE_DOTFILES_PATH: dotfiles path, defaults to BRIEFCASE_HOME_PATH/.dotfiles
-    BRIEFCASE_HOME_PATH: the user's home directory, defaults to ~
-    BRIEFCASE_SECRETS_PATH: secrets path, defaults to BRIEFCASE_HOME_PATH/.briefcase_secrets
+> **Default location: `~/.briefcase_secrets`**    
+> Override by setting BRIEFCASE_SECRETS_PATH in your environment.
 
 
 ## Copyright
