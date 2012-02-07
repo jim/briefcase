@@ -29,6 +29,12 @@ command :generate do |c|
   c.when_called Briefcase::Commands::Generate
 end
 
+command :git do |c|
+  c.syntax = 'briefcase git [options]'
+  c.description = 'Run a git command in the dotfiles directory'
+  c.when_called Briefcase::Commands::Git
+end
+
 default_command :help
 
 # command :suggest do |c|
