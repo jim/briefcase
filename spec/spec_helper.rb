@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'turn/autorun/minitest'
+require 'minitest/spec'
+# require 'turn/autorun/minitest'
 require 'minitest/mock'
 
 MiniTest::Unit.autorun
