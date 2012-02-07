@@ -7,7 +7,7 @@ By keeping your configuration files in a git public git repository, you can shar
 [The project homepage](http://jim.github.com/briefcase/) includes
 installation and usage documentation.
 
-[![Build Status](https://secure.travis-ci.org/[jim]/[briefcase].png)](http://travis-ci.org/[jim]/[briefcase])
+[![Build Status](https://secure.travis-ci.org/jim/briefcase.png)](http://travis-ci.org/jim/briefcase)
 
 ## Changelog
 
