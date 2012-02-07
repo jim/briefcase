@@ -3,10 +3,13 @@ layout: home
 title: Briefcase
 ---
 
-# briefcase
-
 briefcase is a tool to facilitate keeping dotfiles in git, including those with
 private information (such as `.gitconfig`).
+
+By keeping your configuration files in a git public git repository, you
+can share your settings with others. Any secret information is kept in a
+single file outside the repository (it's up to you to backup and
+transport this file).
 
 
 ## Getting started
@@ -44,8 +47,8 @@ repo. I recommend creating a repo on Github or another Git hosting
 service, adding it as a remote, and pushing your dotfiles there for
 safekeeping.
 
-    $ git remote add origin git@github.com:jim/dotfiles.git
-    $ git push origin master
+    $ briefcase git remote add origin git@github.com:jim/dotfiles.git
+    $ briefcase git push origin master
 
 ## Commands
 
@@ -77,7 +80,7 @@ $ briefcase redact ~/.config_with_secrets
 </pre>
 
 The user is presented with an editor (either `vim` or the value of the environment
-variable `EDITOR`, where sensitive information like this:
+variable `EDITOR`), where sensitive information like this:
 
     password: superSecretPassword
 
