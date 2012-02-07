@@ -11,7 +11,7 @@ installation and usage documentation.
 
 ## Changelog
 
-* 0.4.0 Renamed project Briefcase. First public release.
+* 0.4.0 Renamed project to Briefcase. First public release.
 * 0.3.0 Added code documentation, internal renaming, general cleanup. First public release.
 * 0.2.0 Added redact command, use .redacted for dynamic dotfiles
 * 0.1.3 The sync command no longer creates symlinks for dynamic files
