@@ -74,7 +74,7 @@ Imports a dotfile that contains sensitive information.
 $ briefcase redact ~/.config_with_secrets
 
 <span class="intro">Importing /Users/jim/.config_with_secrets into /Users/jim/.dotfiles</span>
-<span class="info">Moving /Users/jim/.config_with_secrsts to /Users/jim/.dotfiles/config_with_secrets</span>
+<span class="info">Moving /Users/jim/.config_with_secrets to /Users/jim/.dotfiles/config_with_secrets</span>
 <span class="info">Symlinking /Users/jim/.config_with_secrets -> /Users/jim/.dotfiles/config_with_secrets</span>
 <span class="info">Creating redacted version at /Users/jim/.dotfiles/config_with_secrets.redacted</span>
 </pre>
@@ -162,22 +162,21 @@ is a basic setup for a .gitconfig file:
     | +-.gitconfig            Symlink to ~/.dotfiles/gitconfig
     | +-.dotfiles/            Dotfiles directory
     | | +-gitconfig           Standard Dotfile
-    | | +-gitconfig.dynamic   Redacted dotfile
+    | | +-gitconfig.redacted  Redacted dotfile
 
 ### Home directory
-
 
 Where the action happens. Dotfiles that normally exist here are replaced by
 symlinks to files in the dotfiles directory.
 
-> **Default location: `~`**    
+> **Default location: `~`**
 > Override by setting BRIEFCASE_HOME_PATH in your environment.
 
 ### Dotfiles directory
 
 Where dotfiles are stored.
 
-> **Default location: `~/.dotfiles`**    
+> **Default location: `~/.dotfiles`**
 > Override by setting BRIEFCASE_DOTFILES_PATH in your environment.
 
 There are two types of dotfiles.
@@ -196,7 +195,7 @@ symlinked to the user's home directory is then generated from this file.
 This file contains the information removed from dotfiles imported using the
 redact command.
 
-> **Default location: `~/.briefcase_secrets`**    
+> **Default location: `~/.briefcase_secrets`**
 > Override by setting BRIEFCASE_SECRETS_PATH in your environment.
 
 
