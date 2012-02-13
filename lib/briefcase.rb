@@ -20,19 +20,19 @@ module Briefcase
     attr_accessor :dotfiles_path, :home_path, :secrets_path, :testing
 
     def dotfiles_path
-      @dotfiles_path ||= File.expand_path(ENV['SHHH_DOTFILES_PATH'] || DEFAULT_DOTFILES_PATH)
+      @dotfiles_path ||= File.expand_path(ENV['BRIEFCASE_DOTFILES_PATH'] || DEFAULT_DOTFILES_PATH)
     end
 
     def home_path
-      @home_path ||= File.expand_path(ENV['SHHH_HOME_PATH'] || DEFAULT_HOME_PATH)
+      @home_path ||= File.expand_path(ENV['BRIEFCASE_HOME_PATH'] || DEFAULT_HOME_PATH)
     end
 
     def secrets_path
-      @secrets_path ||= File.expand_path(ENV['SHHH_SECRETS_PATH'] || DEFAULT_SECRETS_PATH)
+      @secrets_path ||= File.expand_path(ENV['BRIEFCASE_SECRETS_PATH'] || DEFAULT_SECRETS_PATH)
     end
 
     def testing?
-      @testing ||= ENV['SHHH_TESTING'] == 'true'
+      @testing ||= ENV['BRIEFCASE_TESTING'] == 'true'
     end
   end
 
