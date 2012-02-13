@@ -80,7 +80,7 @@ $ briefcase redact ~/.config_with_secrets
 </pre>
 
 The user is presented with an editor (either `vim` or the value of the environment
-variable `EDITOR`), where sensitive information like this:
+variable `BRIEFCASE_EDITOR`), where sensitive information like this:
 
     password: superSecretPassword
 
