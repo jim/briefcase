@@ -66,7 +66,7 @@ TEXT
       #
       # Returns the content of the file after the editor is closed.
       def edit_file_with_editor(path)
-        editor_command = ENV['EDITOR'] || 'vim'
+        editor_command = ENV['BRIEFCASE_EDITOR'] || 'vim'
         system(editor_command, path)
         File.read(path)
       end

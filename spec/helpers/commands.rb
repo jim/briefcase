@@ -17,7 +17,7 @@ def run_command(command, expected_status=0, &block)
   ENV['BRIEFCASE_SECRETS_PATH'] = secrets_path
   ENV['BRIEFCASE_TESTING'] = 'true'
   ENV['RUBYOPT'] = 'rubygems'
-  ENV['EDITOR'] = File.expand_path('../bin/editor', File.dirname(__FILE__))
+  ENV['BRIEFCASE_EDITOR'] = File.expand_path('../bin/editor', File.dirname(__FILE__))
 
   full_command = "./bin/briefcase #{command}"
   full_command << " --trace" if ENV['BRIEFCASE_TEST_TRACE']
