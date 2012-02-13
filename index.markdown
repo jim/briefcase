@@ -198,8 +198,6 @@ redact command.
 > **Default location: `~/.briefcase_secrets`**
 > Override by setting BRIEFCASE_SECRETS_PATH in your environment.
 
-
 ## Copyright
 
-Copyright (c) 2011 Jim Benton. See LICENSE for details.
-
+Copyright (c) 2012 Jim Benton. See LICENSE for details.
