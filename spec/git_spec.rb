@@ -11,7 +11,7 @@ describe Briefcase::Commands::Git do
     cleanup_dotfiles_directory
   end
 
-  it "creates links to existing files" do
+  it "passes commands through to git" do
     create_file(dotfiles_path + '/test.txt', 'testing git integration')
     run_command("git status")
 

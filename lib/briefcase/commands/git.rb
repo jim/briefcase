@@ -28,7 +28,8 @@ module Briefcase
       private
 
       def run_git_command(command)
-        puts `cd #{dotfiles_path} && git #{command}`
+        $stdout.flush
+        exec "cd #{dotfiles_path} && git #{command}"
       end
 
     end

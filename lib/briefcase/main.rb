@@ -1,5 +1,16 @@
-require 'commander/import'
+require 'highline/import'
 require File.expand_path('../briefcase', File.dirname(__FILE__))
+
+# In the case of the git passthrough command, we want to pass the complete command
+# off to git so the options aren't mangled by Commander.
+#
+# Initializing a Briefcase::Commands::Git object will eventually call out to
+# git using exec, so this script will be aborted.
+if ARGV[0] == 'git'
+  Briefcase::Commands::Git.new(ARGV[1..-1], {})
+end
+
+require 'commander/import'
 
 program :name, 'Briefcase'
 program :version, Briefcase::VERSION
@@ -29,10 +40,11 @@ command :generate do |c|
   c.when_called Briefcase::Commands::Generate
 end
 
+# This is a placeholder so that this command appears in the documentation. Any git
+# passthrough commands are caught earlier in this file.
 command :git do |c|
   c.syntax = 'briefcase git [options]'
   c.description = 'Run a git command in the dotfiles directory'
-  c.when_called Briefcase::Commands::Git
 end
 
 default_command :help
