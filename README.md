@@ -11,6 +11,10 @@ installation and usage documentation.
 
 ## Changelog
 
+* 0.4.1 Git command now properly passes options through to git, and also allows
+        git output to display in color.
+
+        Path environment variables inherit settings for parent directories.
 * 0.4.0 Renamed project to Briefcase. First public release.
 * 0.3.0 Added code documentation, internal renaming, general cleanup. First public release.
 * 0.2.0 Added redact command, use .redacted for dynamic dotfiles
