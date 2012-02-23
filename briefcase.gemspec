@@ -10,15 +10,13 @@ Gem::Specification.new do |s|
   s.default_executable = %q{briefcase}
   s.email = %q{jim@autonomousmachine.com}
   s.executables = ["briefcase"]
-  s.extra_rdoc_files = %w{README.rdoc LICENSE}
   s.files = Dir['lib/**/*.rb'] +                                # library
             Dir['bin/*'] +                                      # executable
             Dir['spec/**/*.rb'] +                               # spec files
             Dir['spec/bin/editor'] +                            # spec editor
-            %w{README.rdoc LICENSE briefcase.gemspec Rakefile}  # misc
+            %w{README.md LICENSE briefcase.gemspec Rakefile}    # misc
 
   s.homepage = %q{http://github.com/jim/briefcase}
-  s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.test_files = Dir['spec/*.rb']
