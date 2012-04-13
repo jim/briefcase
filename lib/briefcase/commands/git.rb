@@ -1,3 +1,5 @@
+require 'escape'
+
 module Briefcase
   module Commands
 
@@ -20,7 +22,7 @@ module Briefcase
       # create an empty git repository.
       def execute
         verify_dotfiles_directory_exists
-        command = @args.join(' ')
+        command = Escape.shell_command(@args)
         intro("Running git %s in %s", command, dotfiles_path)
         run_git_command(command)
       end
