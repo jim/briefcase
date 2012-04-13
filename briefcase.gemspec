@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir['spec/*.rb']
 
   s.add_runtime_dependency('commander')
+  s.add_runtime_dependency('escape')
   s.add_development_dependency('minitest')
   s.add_development_dependency('open4')
   s.add_development_dependency('rake', '0.9.2.2')
