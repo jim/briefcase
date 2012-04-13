@@ -8,7 +8,7 @@ module Briefcase
     class Redact < Import
 
       EDITING_HELP_TEXT = <<-TEXT
-# Edit the file below, replacing and sensitive information to turn this:
+# Edit the file below, replacing any sensitive information to turn this:
 #
 #   password: superSecretPassword
 #
