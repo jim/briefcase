@@ -6,7 +6,6 @@ Gem::Specification.new do |s|
   s.summary = %q{Briefcase manages dotfiles and handles keeping their secrets safe}
   s.description = %q{Command line program to migrate dotfiles to a git repo at ~/.dotfiles and generate static dotfiles with secret values.}
   s.authors = ["Jim Benton"]
-  s.date = %q{2011-12-22}
   s.default_executable = %q{briefcase}
   s.email = %q{jim@autonomousmachine.com}
   s.executables = ["briefcase"]
