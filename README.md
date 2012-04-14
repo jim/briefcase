@@ -11,6 +11,10 @@ installation and usage documentation.
 
 ## Changelog
 
+* 0.4.2 Git command argument are properly escaped (Sebastian Spieszko)
+
+        Changed the instruction delimiter when redacting files to '!!'.
+
 * 0.4.1 Git command now properly passes options through to git, and also allows
         git output to display in color.
 
