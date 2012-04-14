@@ -67,22 +67,22 @@ describe Briefcase::Commands::Import do
       symlink_must_exist(@original_path, @destination_path)
     end
 
-    it "imports a redacted dotfile" do
+    it "imports a redacted dotfile xxx" do
       redacted_path = File.join(dotfiles_path, 'test.redacted')
       create_file @original_path, <<-TEXT
 setting: ABCDEFG
 TEXT
 
       stub_editor_response redacted_path, <<-TEXT
-# Edit the file below, replacing and sensitive information to turn this:
-#
-#   password: superSecretPassword
-#
-# Into:
-#
-#   password: # briefcase(password)
-#
-########################################################################
+!! Edit the file below, replacing and sensitive information to turn this:
+!!
+!!   password: superSecretPassword
+!!
+!! Into:
+!!
+!!   password: # briefcase(password)
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 setting: # briefcase(token)
 TEXT
 

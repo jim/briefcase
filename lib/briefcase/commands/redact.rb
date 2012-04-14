@@ -8,15 +8,15 @@ module Briefcase
     class Redact < Import
 
       EDITING_HELP_TEXT = <<-TEXT
-# Edit the file below, replacing any sensitive information to turn this:
-#
-#   password: superSecretPassword
-#
-# Into:
-#
-#   password: # briefcase(password)
-#
-########################################################################
+!! Edit the file below, replacing any sensitive information to turn this:
+!!
+!!   password: superSecretPassword
+!!
+!! Into:
+!!
+!!   password: # briefcase(password)
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 TEXT
 
       private
@@ -37,14 +37,12 @@ TEXT
         redacted_path = destination + ".#{REDACTED_EXTENSION}"
         info "Creating redacted version at #{redacted_path}"
 
-        content_to_edit = original_content = File.read(destination)
+        original_content = File.read(destination)
 
-        unless Briefcase.testing?
-          content_to_edit = EDITING_HELP_TEXT + content_to_edit
-        end
+        content_to_edit = EDITING_HELP_TEXT + original_content
 
         write_file(redacted_path, content_to_edit)
-        edited_content = edit_file_with_editor(redacted_path).gsub!(EDITING_HELP_TEXT, '')
+        edited_content = edit_file_with_editor(redacted_path).gsub(/^!!.*\r?\n/, '')
         write_file(redacted_path, edited_content)
 
         edited_content.lines.each_with_index do |line, line_index|
